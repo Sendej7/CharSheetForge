@@ -66,10 +66,10 @@ jobs:
       # Run Sonar Analysis
       - name: Run Sonar Analysis
         run: |
-          sonar-scanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          cd webapi
+          cd reactapp
+          sonar-scanner -D"sonar.projectKey=Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+                    sonar-scanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          cd ../webapi
           dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          cd ../reactapp
-          sonar-scanner -D"sonar.projectKey=Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
