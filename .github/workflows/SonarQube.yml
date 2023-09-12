@@ -24,14 +24,14 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '7.0.x'  # Zmień na wersję .NET, której używasz
+          dotnet-version: '7.0.x'  # Change to the .NET version you are using
       
       - name: Setup Node.js for React app
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'  # Zmień na wersję Node.js, której używasz
+          node-version: '14.x'  # Change to the Node.js version you are using
 
-      # Cache dla SonarQube i inne konfiguracje
+      # Cache for SonarQube and other configurations
 
       - name: Cache SonarQube packages
         uses: actions/cache@v1
@@ -39,6 +39,12 @@ jobs:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
+      - name: Install SonarQube scanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Build and analyze .NET project
         shell: powershell
@@ -48,10 +54,14 @@ jobs:
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
+      - name: Install Sonar Scanner CLI
+        run: |
+          choco install sonarqube-scanner.portable
+
       - name: Build and analyze React app
         shell: powershell
         run: |
           cd reactapp
           npm install
-          npm run build  # lub inny skrypt do budowania Twojej aplikacji React
+          npm run build  # or another script to build your React application
           sonar-scanner -Dsonar.projectKey="Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" -Dsonar.sources=src -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
