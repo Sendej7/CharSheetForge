@@ -67,7 +67,7 @@ jobs:
       - name: Run Sonar Analysis for React
         run: |
           cd reactapp
-          sonar-scanner -D"sonar.projectKey=AYqKyYSB222sTEAu7r1E2" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
+          sonar-scanner -D"sonar.projectKey=AYqKyYSB222sTEAu7r1E2" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN2 }}"
 
       # Run Sonar Analysis for .NET
       - name: Run Sonar Analysis for .NET
