@@ -64,4 +64,4 @@ jobs:
           cd reactapp
           npm install
           npm run build  # or another script to build your React application
-          sonar-scanner -Dsonar.projectKey="Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" -Dsonar.sources=src -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
+          sonar-scanner -D"sonar.projectKey=Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN }}"
