@@ -25,7 +25,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '7.0.x'
-
+      - name: Setup .NET Core SDK 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
       - name: Setup Node.js for React app
         uses: actions/setup-node@v2
         with:
@@ -39,10 +42,10 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Install specific version of SonarQube scanner for .NET
-        run: dotnet tool install --global dotnet-sonarscanner --version 5.2.0
+        run: dotnet tool install --global dotnet-sonarscanner --version 5.13.1
 
       - name: Update ReportGenerator to a specific version
-        run: dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7
+        run: dotnet tool update dotnet-reportgenerator-globaltool -g --version 5.1.25
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
