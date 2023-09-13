@@ -1,4 +1,4 @@
-﻿namespace webapi.Models.Enums
+﻿namespace webapi.Models.DND.Enums.DND
 {
     public enum Race
     {
