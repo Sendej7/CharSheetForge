@@ -68,7 +68,8 @@ jobs:
       - name: Verify coverage report existence
         run: |
           ls **/coverage.cobertura.xml
-      
+      - name: Debug - List directory contents after running tests
+        run: Get-ChildItem -Recurse
       - name: Convert to SonarQube format
         run: |
           reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage/SonarQube" -reporttypes:"SonarQube"
