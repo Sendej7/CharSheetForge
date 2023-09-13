@@ -1,4 +1,4 @@
-﻿namespace webapi.Models.Enums.DND
+﻿namespace webapi.Models.DND.Enums.DND
 {
     public enum CharacterClass
     {

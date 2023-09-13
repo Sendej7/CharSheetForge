@@ -1,11 +1,21 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using webapi.Data;
+using webapi.Interfaces;
+using webapi.Repositories;
+using webapi.Services;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<CharSheetContext>(options=>
+options.UseSqlServer(builder.Configuration.GetConnectionString("CharSheetContext")));
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 
 var app = builder.Build();
 
