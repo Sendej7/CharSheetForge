@@ -1,9 +1,15 @@
-﻿using webapi.Models.DND.Enums.DND;
+﻿using webapi.Models.DND.Enums;
+using webapi.Models.DND.Enums.DND;
 
 namespace webapi.Models.DND
 {
-    public class DNDCharacter : BaseCharacter
+    public class DNDCharacter
     {
+        public int ID { get; set; }  // Primary key
+        public int UserToken { get; set; }
+        public virtual User User { get; set; }
+        public SystemType SystemType { get; set; } = SystemType.DND;
+
         // Basic Information
         public string CharacterName { get; set; }
         public CharacterClass Class { get; set; }
@@ -28,7 +34,7 @@ namespace webapi.Models.DND
         public int Initiative { get; set; }
 
         // Inventory and Equipment
-        public List<Equipment> Equipment { get; set; }
+        public List<Equipment>? Equipment { get; set; }
         public int Gold { get; set; }
 
         // Traits and Special Abilities

@@ -14,8 +14,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
-builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<ICharacterSheetRepository, CharacterSheetRepository>();
+builder.Services.AddScoped<ICharacterSheetService, CharacterSheetService>();
 
 var app = builder.Build();
 
