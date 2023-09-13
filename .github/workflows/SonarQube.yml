@@ -50,6 +50,10 @@ jobs:
       - name: Install Sonar Scanner CLI
         run: choco install sonarqube-scanner.portable
 
+      # Install ReportGenerator for .NET
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
       # Build .NET Project
       - name: Build .NET Project
         run: |
