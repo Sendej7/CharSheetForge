@@ -61,8 +61,6 @@ jobs:
           npm install
           npm run build
 
-      # New Steps for Unit Tests and Code Coverage
-
       - name: Run Unit Tests and Generate Coverage Report
         run: |
           cd webapiUnitTests
@@ -80,6 +78,6 @@ jobs:
       - name: Run Sonar Analysis for .NET
         run: |
           cd webapi
-          dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.cs.opencover.reportsPaths="../webapiUnitTests/TestResults/*/coverage.cobertura.xml" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
