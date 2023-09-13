@@ -38,8 +38,11 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Install SonarQube scanner for .NET
-        run: dotnet tool install --global dotnet-sonarscanner
+      - name: Install specific version of SonarQube scanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner --version 5.2.0
+
+      - name: Update ReportGenerator to a specific version
+        run: dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7
 
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
@@ -47,13 +50,8 @@ jobs:
       - name: Install Sonar Scanner CLI
         run: choco install sonarqube-scanner.portable
 
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
       - name: Build .NET Project
-        run: |
-          cd webapi
-          dotnet build
+        run: dotnet build
 
       - name: Build React App
         run: |
@@ -61,30 +59,10 @@ jobs:
           npm install
           npm run build
 
-      - name: Run Unit Tests and Generate Coverage Report
+      - name: Run Sonar Analysis and Unit Tests for .NET
         run: |
-          cd webapiUnitTests
-          dotnet test --collect:"XPlat Code Coverage"
-      - name: Verify coverage report existence
-        run: |
-          ls **/coverage.cobertura.xml
-      - name: Debug - List directory contents after running tests
-        run: Get-ChildItem -Recurse
-      - name: Convert to SonarQube format
-        run: |
-          reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage/SonarQube" -reporttypes:"SonarQube"
-          
-      - name: Show content of coverage.cobertura.xml
-        run: cat **/coverage.cobertura.xml
-        
-      - name: Run Sonar Analysis for React
-        run: |
-          cd reactapp
-          sonar-scanner -D"sonar.projectKey=AYqKyYSB222sTEAu7r1E2" -D"sonar.sources=src" -D"sonar.host.url=${{ secrets.SONAR_HOST_URL }}" -D"sonar.login=${{ secrets.SONAR_TOKEN2 }}"
-
-      - name: Run Sonar Analysis for .NET
-        run: |
-          cd webapi
-          dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.cs.opencover.reportsPaths="../webapiUnitTests/TestResults/*/coverage.cobertura.xml" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner begin /k:"MyProject" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
           dotnet build
+          dotnet test --no-build --collect:"XPlat Code Coverage"
+          reportgenerator "-reports:*\TestResults\*\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
