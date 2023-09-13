@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v1
         with:
           java-version: 17
 
@@ -32,18 +32,11 @@ jobs:
           node-version: '14.x'
 
       - name: Cache SonarQube packages
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Node Modules
-        uses: actions/cache@v2
-        with:
-          path: reactapp/node_modules
-          key: ${{ runner.os }}-node-modules
-          restore-keys: ${{ runner.os }}-node-modules
 
       - name: Install SonarQube scanner for .NET
         run: dotnet tool install --global dotnet-sonarscanner
@@ -72,11 +65,9 @@ jobs:
         run: |
           cd webapiUnitTests
           dotnet test --collect:"XPlat Code Coverage"
-
       - name: Verify coverage report existence
         run: |
           ls **/coverage.cobertura.xml
-
       - name: Convert to SonarQube format
         run: |
           reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage/SonarQube" -reporttypes:"SonarQube"
@@ -89,5 +80,6 @@ jobs:
       - name: Run Sonar Analysis for .NET
         run: |
           cd webapi
-          dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.cs.opencover.reportsPaths="webapiUnitTests/TestResults/*/coverage.cobertura.xml" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.cs.opencover.reportsPaths="../webapiUnitTests/TestResults/*/coverage.cobertura.xml" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet build
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
