@@ -68,10 +68,14 @@ jobs:
       - name: Verify coverage report existence
         run: |
           ls **/coverage.cobertura.xml
+      
       - name: Convert to SonarQube format
         run: |
           reportgenerator "-reports:**/coverage.cobertura.xml" "-targetdir:coverage/SonarQube" -reporttypes:"SonarQube"
-
+          
+      - name: Show content of coverage.cobertura.xml
+        run: cat **/coverage.cobertura.xml
+        
       - name: Run Sonar Analysis for React
         run: |
           cd reactapp
