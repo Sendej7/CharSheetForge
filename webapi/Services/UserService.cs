@@ -11,12 +11,12 @@ namespace webapi.Services
         {
             _userRepository = userRepository;
         }
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
             var character = await _userRepository.GetUserByIdAsync(id);
             if (character == null)
             {
-                throw new Exception("Character not found");
+                return null;
             }
             return character;
         }

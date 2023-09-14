@@ -46,7 +46,7 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.ThrowsAsync<Exception>(() => UserService.GetUserByIdAsync(0));
         }
         [Fact]
-        public void GetUserByIdAsync_ShouldReturnUser_WhenIdIsValidAndReturnAllCharacterSheetsConnectedToUser()
+        public void  GetUserByIdAsync_ShouldReturnUser_WhenIdIsValidAndReturnAllCharacterSheetsConnectedToUser()
         {
             var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "User")
             .Options;
@@ -57,12 +57,12 @@ namespace webapiUnitTests.ServicesUnitTests
             {
                 ID = id,
                 UserToken = 323,
-                DNDCharacters = new List<DNDCharacter>
+                DNDCharacters = new List<DndCharacter>
                 {
-                    new DNDCharacter
+                    new DndCharacter
                     {
                         ID = 1,
-                        UserToken = id,
+                        UserToken = 323,
                         SystemType = SystemType.DND,
                         CharacterName = "Test Character",
                         Class = CharacterClass.Wizard,
@@ -89,10 +89,10 @@ namespace webapiUnitTests.ServicesUnitTests
                         AlliesAndOrganizations = new List<AllyAndOrganization>(),
                         AdditionalNotes = "Additional notes go here"
                     },
-                    new DNDCharacter
+                    new DndCharacter
                     {
                         ID = 2,
-                        UserToken = id,
+                        UserToken = 323,
                         SystemType = SystemType.DND,
                         CharacterName = "Test Character",
                         Class = CharacterClass.Wizard,
@@ -119,10 +119,10 @@ namespace webapiUnitTests.ServicesUnitTests
                         AlliesAndOrganizations = new List<AllyAndOrganization>(),
                         AdditionalNotes = "Additional notes go here"
                     },
-                    new DNDCharacter
+                    new DndCharacter
                     {
                         ID = 3,
-                        UserToken = id,
+                        UserToken = 323,
                         SystemType = SystemType.DND,
                         CharacterName = "Test Character",
                         Class = CharacterClass.Wizard,

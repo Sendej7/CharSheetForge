@@ -13,21 +13,21 @@ namespace webapi.Services
         {
             _characterRepository = characterRepository;
         }
-        public async Task<DNDCharacter> GetDNDCardByIdAsync(int id)
+        public async Task<DndCharacter> GetDNDCardByIdAsync(int id)
         {
             var dndCard = await _characterRepository.GetDNDCardByIdAsync(id);
             if (dndCard == null)
             {
-                throw new Exception("Character not found");
+                return null;
             }
             return dndCard;
         }
-        public async Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersAsync()
+        public async Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync()
         {
             return await _characterRepository.GetAllDNDCharactersAsync();
         }
 
-        public async Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
+        public async Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
         {
             return await _characterRepository.GetAllDNDCharactersByFiltersAsync(UserToken, systemType);
         }

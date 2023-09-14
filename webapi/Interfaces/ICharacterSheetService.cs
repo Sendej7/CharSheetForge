@@ -6,10 +6,10 @@ namespace webapi.Interfaces
 {
     public interface ICharacterSheetService
     {
-        Task<DNDCharacter> GetDNDCardByIdAsync(int id);
+        Task<DndCharacter> GetDNDCardByIdAsync(int id);
 
-        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersAsync();
-        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int BaseCharacterID, SystemType? systemType = null);
+        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync();
+        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
 
     }
 }

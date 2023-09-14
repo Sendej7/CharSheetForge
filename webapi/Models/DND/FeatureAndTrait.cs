@@ -3,9 +3,9 @@
     public class FeatureAndTrait
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Source { get; set; } // Class, Race, etc.
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Source { get; set; } = string.Empty; // Class, Race, etc.
         public int LevelRequired { get; set; }
     }
 }
