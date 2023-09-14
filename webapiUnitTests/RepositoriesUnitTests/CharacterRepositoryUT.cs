@@ -21,7 +21,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetDNDCardByIdAsync_ShouldReturnCharacter_WhenIdIsValid()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "BaseCharacters")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             using (var context = new CharSheetContext(options))
@@ -44,7 +45,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public void GetDNDCardByIdAsync_MustReturnException_WhenIdIsNotValidOrThereIsNoCharacter()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "BaseCharacters")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             DndCharacter? character = new DndCharacter();
@@ -57,7 +59,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersAsync_ShouldReturnAllCharacterSheetsAsync()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             using (var context = new CharSheetContext(options))
@@ -79,7 +82,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersAsync_ReturnsEmptyList_WhenNoCharactersExist()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             IEnumerable<DndCharacter?> characters;
@@ -95,7 +99,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersByUserToken_ShouldReturnAllMatchingCharacterSheetsAsync()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             using (var context = new CharSheetContext(options))
@@ -117,7 +122,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersByUserTokenAndSystemType_ShouldReturnAllMatchingCharacterSheetsAsync()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             using (var context = new CharSheetContext(options))
@@ -139,7 +145,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersByUserTokenAndSystemType_ShouldReturnEmptyListWhenNoMatchesAsync()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             IEnumerable<DndCharacter> characters;
@@ -155,7 +162,8 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetAllDNDCharactersByUserTokenAndNoSystemType_ShouldReturnEmptyListAsync()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
             using (var context = new CharSheetContext(options))
