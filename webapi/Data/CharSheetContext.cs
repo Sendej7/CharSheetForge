@@ -8,11 +8,11 @@ namespace webapi.Data
     {
         public CharSheetContext(DbContextOptions<CharSheetContext> options) : base(options) { }
         public DbSet<User> BaseCharacters { get; set; }
-        public DbSet<DNDCharacter> DNDCharacters { get; set; }
+        public DbSet<DndCharacter> DNDCharacters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DNDCharacter>()
+            modelBuilder.Entity<DndCharacter>()
                 .HasOne(dnd => dnd.User)
                 .WithMany(baseChar => baseChar.DNDCharacters)
                 .HasForeignKey(dnd => dnd.UserToken);

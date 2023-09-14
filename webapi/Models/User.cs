@@ -7,7 +7,7 @@ namespace webapi.Models
     {
         public int ID { get; set; }
         public int UserToken { get; set; }
-        public virtual ICollection<DNDCharacter>? DNDCharacters { get; set; }
+        public virtual ICollection<DndCharacter>? DNDCharacters { get; set; }
 
     }
 }

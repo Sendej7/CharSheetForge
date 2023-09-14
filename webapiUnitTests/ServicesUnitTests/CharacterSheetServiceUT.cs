@@ -50,7 +50,7 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.ThrowsAsync<Exception>(() => characterService.GetDNDCardByIdAsync(0));
         }
         [Fact]
-        public void GetAllDNDCharactersAsync_ShouldReturnAllCharacterSheets()
+        public async Task GetAllDNDCharactersAsync_ShouldReturnAllCharacterSheetsAsync()
         {
             var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
             .Options;
@@ -59,11 +59,11 @@ namespace webapiUnitTests.ServicesUnitTests
                 mockRepo.Setup(repo => repo.GetAllDNDCharactersAsync())
             .ReturnsAsync(Characters());
             var characterService = new CharacterSheetService(mockRepo.Object);
-            var characters = characterService.GetAllDNDCharactersAsync();
+            var characters = await characterService.GetAllDNDCharactersAsync();
 
             Assert.NotNull(characters);
-            Assert.Equal(3, characters.Result.Count());
-            Assert.Equal(1, characters.Result.First().ID);
+            Assert.Equal(3, characters.Count());
+            Assert.Equal(1, characters.First().ID);
         }
         [Fact]
         public void GetAllDNDCharactersAsync_ReturnsEmptyList_WhenNoCharactersExist()
@@ -81,11 +81,11 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.Empty(characters.Result);
         }
         #region
-        public List<DNDCharacter> Characters()
+        public static List<DndCharacter> Characters()
         {
-            return new List<DNDCharacter>
+            return new List<DndCharacter>
             {
-                new DNDCharacter
+                new DndCharacter
                 {
                     ID = 1,
                     UserToken = 1,
@@ -115,7 +115,7 @@ namespace webapiUnitTests.ServicesUnitTests
                     AlliesAndOrganizations = new List<AllyAndOrganization>(),
                     AdditionalNotes = "Additional notes go here"
                 },
-                new DNDCharacter
+                new DndCharacter
                 {
                     ID = 2,
                     UserToken = 2,
@@ -145,7 +145,7 @@ namespace webapiUnitTests.ServicesUnitTests
                     AlliesAndOrganizations = new List<AllyAndOrganization>(),
                     AdditionalNotes = "Additional notes go here"
                 },
-                new DNDCharacter
+                new DndCharacter
                 {
                     ID = 3,
                     UserToken = 3,
