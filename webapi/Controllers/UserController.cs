@@ -17,17 +17,10 @@ namespace webapi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
         {
-            try
-            {
-                var character = await _userService.GetUserByIdAsync(id);
-                if (character == null)
-                    return NotFound();
-                return Ok(character);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
+            var character = await _userService.GetUserByIdAsync(id);
+            if (character == null)
+                return NotFound();
+            return Ok(character);
         }
     }
 }
