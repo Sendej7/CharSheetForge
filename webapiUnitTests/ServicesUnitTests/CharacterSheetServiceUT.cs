@@ -27,7 +27,7 @@ namespace webapiUnitTests.ServicesUnitTests
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
             mockRepo.Setup(repo => repo.GetDNDCardByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync((int id) => Characters()[0]);
+                .ReturnsAsync((int id) => Helpers.Characters()[0]);
             var characterService = new CharacterSheetService(mockRepo.Object);
             var character = await characterService.GetDNDCardByIdAsync(1);
 
@@ -57,7 +57,7 @@ namespace webapiUnitTests.ServicesUnitTests
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
                 mockRepo.Setup(repo => repo.GetAllDNDCharactersAsync())
-            .ReturnsAsync(Characters());
+            .ReturnsAsync(Helpers.Characters());
             var characterService = new CharacterSheetService(mockRepo.Object);
             var characters = await characterService.GetAllDNDCharactersAsync();
 
@@ -80,104 +80,84 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.NotNull(characters);
             Assert.Empty(characters.Result);
         }
-        #region
-        public static List<DndCharacter> Characters()
+        [Fact]
+        public async Task GetAllDNDCharactersByFiltersAsync_ShouldReturnAllCharacterSheetsAsync()
         {
-            return new List<DndCharacter>
-            {
-                new DndCharacter
-                {
-                    ID = 1,
-                    UserToken = 1,
-                    SystemType = SystemType.DND,
-                    CharacterName = "Test Character 1",
-                    Class = CharacterClass.Wizard,
-                    Level = 5,
-                    Background = "Sage",
-                    Race = CharacterRace.Human,
-                    Alignment = CharacterAlignment.LawfulGood,
-                    PlayerName = "John",
-                    Strength = 10,
-                    Dexterity = 12,
-                    Constitution = 14,
-                    Intelligence = 16,
-                    Wisdom = 10,
-                    Charisma = 8,
-                    HitPoints = 35,
-                    ArmorClass = 12,
-                    Speed = 30,
-                    Initiative = 2,
-                    Equipment = new List<Equipment>(),
-                    Gold = 100,
-                    FeaturesAndTraits = new List<FeatureAndTrait>(),
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                    Backstory = "Backstory goes here",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                    AdditionalNotes = "Additional notes go here"
-                },
-                new DndCharacter
-                {
-                    ID = 2,
-                    UserToken = 2,
-                    SystemType = SystemType.DND,
-                    CharacterName = "Test Character 2",
-                    Class = CharacterClass.Wizard,
-                    Level = 5,
-                    Background = "Sage",
-                    Race = CharacterRace.Human,
-                    Alignment = CharacterAlignment.LawfulGood,
-                    PlayerName = "John",
-                    Strength = 10,
-                    Dexterity = 12,
-                    Constitution = 14,
-                    Intelligence = 16,
-                    Wisdom = 10,
-                    Charisma = 8,
-                    HitPoints = 35,
-                    ArmorClass = 12,
-                    Speed = 30,
-                    Initiative = 2,
-                    Equipment = new List<Equipment>(),
-                    Gold = 100,
-                    FeaturesAndTraits = new List<FeatureAndTrait>(),
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                    Backstory = "Backstory goes here",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                    AdditionalNotes = "Additional notes go here"
-                },
-                new DndCharacter
-                {
-                    ID = 3,
-                    UserToken = 3,
-                    SystemType = SystemType.DND,
-                    CharacterName = "Test Character 3",
-                    Class = CharacterClass.Wizard,
-                    Level = 5,
-                    Background = "Sage",
-                    Race = CharacterRace.Human,
-                    Alignment = CharacterAlignment.LawfulGood,
-                    PlayerName = "John",
-                    Strength = 10,
-                    Dexterity = 12,
-                    Constitution = 14,
-                    Intelligence = 16,
-                    Wisdom = 10,
-                    Charisma = 8,
-                    HitPoints = 35,
-                    ArmorClass = 12,
-                    Speed = 30,
-                    Initiative = 2,
-                    Equipment = new List<Equipment>(),
-                    Gold = 100,
-                    FeaturesAndTraits = new List<FeatureAndTrait>(),
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                    Backstory = "Backstory goes here",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                    AdditionalNotes = "Additional notes go here"
-                }
-            };
+            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            .Options;
+
+            var mockRepo = new Mock<ICharacterSheetRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
+            .ReturnsAsync((int id, SystemType systemType) => Helpers.Characters());
+            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>());
+
+            Assert.NotNull(characters);
+            Assert.Equal(3, characters.Count());
+            Assert.Equal(1, characters.First().ID);
         }
-        #endregion
+        [Fact]
+        public async Task GetAllDNDCharactersByUserToken_ShouldReturnAllMatchingCharacterSheetsAsync()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            .Options;
+
+            var mockRepo = new Mock<ICharacterSheetRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), null))
+            .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1));
+            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1);
+
+            Assert.NotNull(characters);
+            Assert.Single(characters);
+            Assert.Equal(1, characters.First().ID);
+        }
+        [Fact]
+        public async Task GetAllDNDCharactersByUserTokenAndSystemType_ShouldReturnAllMatchingCharacterSheetsAsync()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            .Options;
+
+            var mockRepo = new Mock<ICharacterSheetRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
+            .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1 && c.SystemType == SystemType.DND));
+            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
+
+            Assert.NotNull(characters);
+            Assert.Single(characters);
+            Assert.Equal(1, characters.First().ID);
+        }
+        [Fact]
+        public async Task GetAllDNDCharactersByUserTokenAndSystemType_ShouldReturnEmptyListWhenNoMatchesAsync()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            .Options;
+
+            var mockRepo = new Mock<ICharacterSheetRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), null))
+            .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 10));
+            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(10);
+
+            Assert.NotNull(characters);
+            Assert.Empty(characters);
+        }
+        [Fact]
+        public async Task GetAllDNDCharactersByUserTokenAndNoSystemType_ShouldReturnEmptyListAsync()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
+            .Options;
+
+            var mockRepo = new Mock<ICharacterSheetRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
+            .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1 && c.SystemType == SystemType.Cthulu));
+            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
+
+            Assert.NotNull(characters);
+            Assert.Empty(characters);
+        }
     }
 
 }
