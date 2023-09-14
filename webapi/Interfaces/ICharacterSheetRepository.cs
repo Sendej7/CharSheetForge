@@ -9,6 +9,6 @@ namespace webapi.Interfaces
         Task<DNDCharacter?> GetDNDCardByIdAsync(int id);
 
         Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersAsync();
-        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int BaseCharacterID, SystemType? systemType = null);
+        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
     }
 }
