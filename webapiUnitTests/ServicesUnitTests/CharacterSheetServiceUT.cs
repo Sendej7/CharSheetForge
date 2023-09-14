@@ -20,7 +20,7 @@ namespace webapiUnitTests.ServicesUnitTests
     {
 
         [Fact]
-        public void GetDNDCardByIdAsync_ShouldReturnCharacter_WhenIdIsValid()
+        public async Task GetDNDCardByIdAsync_ShouldReturnCharacter_WhenIdIsValid()
         {
             var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "DNDCharacter")
             .Options;
@@ -29,11 +29,11 @@ namespace webapiUnitTests.ServicesUnitTests
             mockRepo.Setup(repo => repo.GetDNDCardByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int id) => Characters()[0]);
             var characterService = new CharacterSheetService(mockRepo.Object);
-            var character = characterService.GetDNDCardByIdAsync(1);
+            var character = await characterService.GetDNDCardByIdAsync(1);
 
             Assert.NotNull(character);
-            Assert.Equal(1, character.Result.ID);
-            Assert.Equal(1, character.Result.UserToken);
+            Assert.Equal(1, character.ID);
+            Assert.Equal(1, character.UserToken);
         }
         [Fact]
         public void GetDNDCardByIdAsync_MustReturnException_WhenIdIsNotValidOrThereIsNoCharacter()
