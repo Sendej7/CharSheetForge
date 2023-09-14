@@ -153,7 +153,7 @@ namespace webapiUnitTests.ServicesUnitTests
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
             .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1 && c.SystemType == SystemType.Cthulu));
             var characterService = new CharacterSheetService(mockRepo.Object);
-            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
+            var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.Cthulu);
 
             Assert.NotNull(characters);
             Assert.Empty(characters);

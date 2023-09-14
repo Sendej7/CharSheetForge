@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using webapi.Models.DND.Enums.DND;
 using webapi.Models.DND.Enums;
 using webapi.Models.DND;
+using webapi.Models;
 
 namespace webapiUnitTests
 {
@@ -19,6 +20,7 @@ namespace webapiUnitTests
                 {
                     ID = 1,
                     UserToken = 1,
+                    User = new User { ID = 1, UserToken = 1 },
                     SystemType = SystemType.DND,
                     CharacterName = "Test Character 1",
                     Class = CharacterClass.Wizard,
@@ -62,6 +64,7 @@ namespace webapiUnitTests
                 {
                     ID = 2,
                     UserToken = 2,
+                    User = new User { ID = 2, UserToken = 2 },
                     SystemType = SystemType.DND,
                     CharacterName = "Test Character 2",
                     Class = CharacterClass.Fighter,
@@ -107,6 +110,7 @@ namespace webapiUnitTests
                 {
                     ID = 4,
                     UserToken = 4,
+                    User = new User { ID = 3, UserToken = 4 },
                     SystemType = SystemType.DND,
                     CharacterName = "Test Character 4",
                     Class = CharacterClass.Rogue,
