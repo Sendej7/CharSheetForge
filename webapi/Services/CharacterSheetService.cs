@@ -13,7 +13,7 @@ namespace webapi.Services
         {
             _characterRepository = characterRepository;
         }
-        public async Task<DndCharacter> GetDNDCardByIdAsync(int id)
+        public async Task<DndCharacter?> GetDNDCardByIdAsync(int id)
         {
             var dndCard = await _characterRepository.GetDNDCardByIdAsync(id);
             if (dndCard == null)

@@ -15,7 +15,7 @@ namespace webapiUnitTests.ServicesUnitTests
     public class UserServiceUT
     {
         [Fact]
-        public void GetUserByIdAsync_ShouldReturnUser_WhenIdIsValid()
+        public async Task GetUserByIdAsync_ShouldReturnUser_WhenIdIsValid()
         {
             var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "BaseUsers")
             .Options;
@@ -24,11 +24,10 @@ namespace webapiUnitTests.ServicesUnitTests
             mockRepo.Setup(repo => repo.GetUserByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int id) => new User { ID = id, UserToken = 323 });
             var UserService = new UserService(mockRepo.Object);
-            var User = UserService.GetUserByIdAsync(1);
-
+            var User = await UserService.GetUserByIdAsync(1);
             Assert.NotNull(User);
-            Assert.Equal(1, User.Result.ID);
-            Assert.Equal(323, User.Result.UserToken);
+            Assert.Equal(1, User.ID);
+            Assert.Equal(323, User.UserToken);
         }
         [Fact]
         public void GetUserByIdAsync_MustReturnException_WhenIdIsNotValidOrThereIsNoUser()
@@ -46,7 +45,7 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.ThrowsAsync<Exception>(() => UserService.GetUserByIdAsync(0));
         }
         [Fact]
-        public void  GetUserByIdAsync_ShouldReturnUser_WhenIdIsValidAndReturnAllCharacterSheetsConnectedToUser()
+        public async Task GetUserByIdAsync_ShouldReturnUser_WhenIdIsValidAndReturnAllCharacterSheetsConnectedToUser()
         {
             var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "User")
             .Options;
@@ -153,13 +152,14 @@ namespace webapiUnitTests.ServicesUnitTests
             });
 
             var UserService = new UserService(mockRepo.Object);
-            var User = UserService.GetUserByIdAsync(1);
+            var User = await UserService.GetUserByIdAsync(1);
 
             Assert.NotNull(User);
-            Assert.Equal(1, User.Result.ID);
-            Assert.Equal(3, User.Result.DNDCharacters.Count());
-            Assert.Equal(1, User.Result.DNDCharacters.First().ID);
-            Assert.Equal(323, User.Result.DNDCharacters.First().UserToken);
+            Assert.Equal(1, User.ID);
+            Assert.NotNull(User.DNDCharacters);
+            Assert.Equal(3, User.DNDCharacters.Count);
+            Assert.Equal(1, User.DNDCharacters.First().ID);
+            Assert.Equal(323, User.DNDCharacters.First().UserToken);
         }
     }
 }
