@@ -29,6 +29,10 @@ namespace webapi.Services
 
         public async Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
         {
+            if(systemType == null)
+            {
+                return await _characterRepository.GetAllDNDCharactersByFiltersAsync(UserToken);
+            }
             return await _characterRepository.GetAllDNDCharactersByFiltersAsync(UserToken, systemType);
         }
 
