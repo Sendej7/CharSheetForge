@@ -27,9 +27,9 @@ namespace webapi.Services
             return await _characterRepository.GetAllDNDCharactersAsync();
         }
 
-        public async Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int BaseCharacterID, SystemType? systemType = null)
+        public async Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
         {
-            return await _characterRepository.GetAllDNDCharactersByFiltersAsync(BaseCharacterID, systemType);
+            return await _characterRepository.GetAllDNDCharactersByFiltersAsync(UserToken, systemType);
         }
 
         
