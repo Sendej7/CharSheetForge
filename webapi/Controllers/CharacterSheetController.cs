@@ -15,27 +15,14 @@ namespace webapi.Controllers
         {
             _characterService = characterService;
         }
-        /*
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCharacterById(int id)
-        {
-            try
-            {
-                var character = await _characterService.GetCharacterByIdAsync(id);
-                return Ok(character);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-        */
         [HttpGet("dnd/{id}")]
         public async Task<IActionResult> GetDNDCardById(int id)
         {
             try
             {
                 var dndCard = await _characterService.GetDNDCardByIdAsync(id);
+                if (dndCard == null)
+                    return NotFound();
                 return Ok(dndCard);
             }
             catch (Exception e)

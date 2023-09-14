@@ -41,8 +41,10 @@ namespace webapiUnitTests.RepositoriesUnitTests
         [Fact]
         public async Task GetUserByIdAsync_ShouldReturnNull_WhenUserDoesNotExist()
         {
-            var options = new DbContextOptionsBuilder<CharSheetContext>().UseInMemoryDatabase(databaseName: "User")
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
+
             User? retrievedUser;
             using(var context = new CharSheetContext(options))
             {

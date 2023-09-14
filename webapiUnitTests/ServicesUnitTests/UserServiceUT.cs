@@ -55,100 +55,8 @@ namespace webapiUnitTests.ServicesUnitTests
             .ReturnsAsync((int id) => new User
             {
                 ID = id,
-                UserToken = 323,
-                DNDCharacters = new List<DndCharacter>
-                {
-                    new DndCharacter
-                    {
-                        ID = 1,
-                        UserToken = 323,
-                        SystemType = SystemType.DND,
-                        CharacterName = "Test Character",
-                        Class = CharacterClass.Wizard,
-                        Level = 5,
-                        Background = "Sage",
-                        Race = CharacterRace.Human,
-                        Alignment = CharacterAlignment.LawfulGood,
-                        PlayerName = "John",
-                        Strength = 10,
-                        Dexterity = 12,
-                        Constitution = 14,
-                        Intelligence = 16,
-                        Wisdom = 10,
-                        Charisma = 8,
-                        HitPoints = 35,
-                        ArmorClass = 12,
-                        Speed = 30,
-                        Initiative = 2,
-                        Equipment = new List<Equipment>(),
-                        Gold = 100,
-                        FeaturesAndTraits = new List<FeatureAndTrait>(),
-                        AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                        Backstory = "Backstory goes here",
-                        AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                        AdditionalNotes = "Additional notes go here"
-                    },
-                    new DndCharacter
-                    {
-                        ID = 2,
-                        UserToken = 323,
-                        SystemType = SystemType.DND,
-                        CharacterName = "Test Character",
-                        Class = CharacterClass.Wizard,
-                        Level = 5,
-                        Background = "Sage",
-                        Race = CharacterRace.Human,
-                        Alignment = CharacterAlignment.LawfulGood,
-                        PlayerName = "John",
-                        Strength = 10,
-                        Dexterity = 12,
-                        Constitution = 14,
-                        Intelligence = 16,
-                        Wisdom = 10,
-                        Charisma = 8,
-                        HitPoints = 35,
-                        ArmorClass = 12,
-                        Speed = 30,
-                        Initiative = 2,
-                        Equipment = new List<Equipment>(),
-                        Gold = 100,
-                        FeaturesAndTraits = new List<FeatureAndTrait>(),
-                        AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                        Backstory = "Backstory goes here",
-                        AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                        AdditionalNotes = "Additional notes go here"
-                    },
-                    new DndCharacter
-                    {
-                        ID = 3,
-                        UserToken = 323,
-                        SystemType = SystemType.DND,
-                        CharacterName = "Test Character",
-                        Class = CharacterClass.Wizard,
-                        Level = 5,
-                        Background = "Sage",
-                        Race = CharacterRace.Human,
-                        Alignment = CharacterAlignment.LawfulGood,
-                        PlayerName = "John",
-                        Strength = 10,
-                        Dexterity = 12,
-                        Constitution = 14,
-                        Intelligence = 16,
-                        Wisdom = 10,
-                        Charisma = 8,
-                        HitPoints = 35,
-                        ArmorClass = 12,
-                        Speed = 30,
-                        Initiative = 2,
-                        Equipment = new List<Equipment>(),
-                        Gold = 100,
-                        FeaturesAndTraits = new List<FeatureAndTrait>(),
-                        AttacksAndSpellcasting = new List<AttackAndSpellcasting>(),
-                        Backstory = "Backstory goes here",
-                        AlliesAndOrganizations = new List<AllyAndOrganization>(),
-                        AdditionalNotes = "Additional notes go here"
-                    },
-                }
+                UserToken = 1,
+                DNDCharacters = Helpers.Characters()
             });
 
             var UserService = new UserService(mockRepo.Object);
@@ -159,7 +67,7 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.NotNull(User.DNDCharacters);
             Assert.Equal(3, User.DNDCharacters.Count);
             Assert.Equal(1, User.DNDCharacters.First().ID);
-            Assert.Equal(323, User.DNDCharacters.First().UserToken);
+            Assert.Equal(1, User.DNDCharacters.First().UserToken);
         }
     }
 }
