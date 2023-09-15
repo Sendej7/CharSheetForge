@@ -13,6 +13,7 @@ using webapi.Models.DND.Enums;
 using webapi.Models.DND;
 using webapi.Services;
 using Xunit;
+using webapi.DTO;
 
 namespace webapiUnitTests.ServicesUnitTests
 {
@@ -167,6 +168,74 @@ namespace webapiUnitTests.ServicesUnitTests
             Assert.NotNull(characters);
             Assert.Empty(characters);
         }
+        [Fact]
+        public async Task CreateCharacterAsync_ShouldThrowException_WhenUserNotFound()
+        {
+            var mockUserRepo = new Mock<IUserRepository>();
+            var mockCharacterRepo = new Mock<ICharacterSheetRepository>();
+            mockUserRepo.Setup(repo => repo.GetUserByTokenAsync(It.IsAny<int>()))
+                .ReturnsAsync((User?)null);
+
+            var characterService = new CharacterSheetService(mockCharacterRepo.Object, mockUserRepo.Object);
+
+            await Assert.ThrowsAsync<Exception>(() => characterService.CreateCharacterAsync(1, new DndCharacterDto()));
+        }
+        [Fact]
+        public async Task CreateCharacterAsync_ShouldCreateCharacter_WhenUserExists()
+        {
+            // Arrange
+            var mockUserRepo = new Mock<IUserRepository>();
+            var mockCharacterRepo = new Mock<ICharacterSheetRepository>();
+
+            var testUser = new User() { UserToken = 1 };
+            var testDndCharacterDto = new DndCharacterDto() { CharacterName = "TestCharacter" };
+            var testDndCharacter = new DndCharacter() { CharacterName = "TestCharacter" }; // Assuming the constructor sets this
+
+            mockUserRepo.Setup(repo => repo.GetUserByTokenAsync(It.IsAny<int>()))
+                       .ReturnsAsync(testUser);
+
+            mockCharacterRepo.Setup(repo => repo.CreateCharacterAsync(It.IsAny<DndCharacter>()))
+                             .ReturnsAsync(testDndCharacter); // Mock to return a character
+
+            var characterService = new CharacterSheetService(mockCharacterRepo.Object, mockUserRepo.Object);
+
+            // Act
+            var result = await characterService.CreateCharacterAsync(1, testDndCharacterDto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal("TestCharacter", result.CharacterName);
+        }
+
+        [Fact]
+        public async Task CreateCharacterAsync_ShouldFillAllFieldsCorrectly()
+        {
+            var mockUserRepo = new Mock<IUserRepository>();
+            var mockCharacterRepo = new Mock<ICharacterSheetRepository>();
+            mockUserRepo.Setup(repo => repo.GetUserByTokenAsync(It.IsAny<int>()))
+                .ReturnsAsync(new User() { UserToken = 1 });
+
+            mockCharacterRepo.Setup(repo => repo.CreateCharacterAsync(It.IsAny<DndCharacter>()))
+            .ReturnsAsync(() => null);
+
+            var characterService = new CharacterSheetService(mockCharacterRepo.Object, mockUserRepo.Object);
+
+            var dto = new DndCharacterDto()
+            {
+                CharacterName = "TestCharacter",
+                Strength = 10
+                // Fill other fields here
+            };
+
+            var result = await characterService.CreateCharacterAsync(1, dto);
+
+            Assert.NotNull(result);
+            Assert.Equal("TestCharacter", result.CharacterName);
+            Assert.Equal(10, result.Strength);
+            // Assert other fields here
+        }
+
+
     }
 
 }
