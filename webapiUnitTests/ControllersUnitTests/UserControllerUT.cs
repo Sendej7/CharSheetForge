@@ -225,6 +225,37 @@ namespace webapiUnitTests.ControllersUnitTests
             // Ensure UpdateUserAndCharacterRelationship was never called
             mockUserService.Verify(s => s.UpdateUserAndCharacterRelationship(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
         }
+        [Fact]
+        public async Task CreateNewUser_ShouldUpdateUserAndCharacterRelationship_WhenBothUserAndCharacterAreCreated()
+        {
+            // Arrange
+            var mockUserService = new Mock<IUserService>();
+            var mockCharacterSheetService = new Mock<ICharacterSheetService>();
+            var controller = new UserController(mockUserService.Object, mockCharacterSheetService.Object);
+
+            var userRequest = new CreateUserRequest
+            {
+                User = new UserDto { UserToken = 1 },
+                DndCharacter = new DndCharacterDto { CharacterName = "Frodo" }
+            };
+
+            mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
+                           .ReturnsAsync(new User { UserToken = 1 });
+
+            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()))
+                                     .ReturnsAsync(new DndCharacter { UserToken = 1 });
+
+            // Act
+            var result = await controller.CreateNewUser(userRequest);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var returnValue = Assert.IsType<User>(okResult.Value);
+            Assert.Equal(1, returnValue.UserToken);
+
+            // Verify that UpdateUserAndCharacterRelationship was called once
+            mockUserService.Verify(s => s.UpdateUserAndCharacterRelationship(1, 1), Times.Once());
+        }
 
 
     }
