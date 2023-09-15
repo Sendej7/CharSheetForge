@@ -6,9 +6,10 @@ namespace webapi.Interfaces
 {
     public interface ICharacterSheetRepository
     {
-        Task<DNDCharacter?> GetDNDCardByIdAsync(int id);
+        Task<DndCharacter?> GetDNDCardByIdAsync(int id);
 
-        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersAsync();
-        Task<IEnumerable<DNDCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
+        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync();
+        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
+        Task<DndCharacter> CreateCharacterAsync(DndCharacter character);
     }
 }
