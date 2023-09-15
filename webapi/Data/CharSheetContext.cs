@@ -14,8 +14,9 @@ namespace webapi.Data
         {
             modelBuilder.Entity<DndCharacter>()
                 .HasOne(dnd => dnd.User)
-                .WithMany(baseChar => baseChar.DNDCharacters)
-                .HasForeignKey(dnd => dnd.UserToken);
+                .WithMany(user => user.DNDCharacters)
+                .HasForeignKey(dnd => dnd.UserToken)
+                .HasPrincipalKey(user => user.UserToken); 
         }
     }
 }

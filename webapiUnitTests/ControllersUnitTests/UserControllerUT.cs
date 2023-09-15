@@ -27,10 +27,11 @@ namespace webapiUnitTests.ControllersUnitTests
             .Options;
 
             var mockRepo = new Mock<IUserService>();
+            var mockRepo2 = new Mock<ICharacterSheetService>();
             mockRepo.Setup(repo => repo.GetUserByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int id) => new User { ID = id, UserToken = 1 });
 
-            var UserController = new UserController(mockRepo.Object);
+            var UserController = new UserController(mockRepo.Object, It.IsAny<ICharacterSheetService>());
             var actionResult = await UserController.GetUserByIdAsync(1);
             var okResult = actionResult as OkObjectResult;
             Assert.NotNull(okResult);
@@ -45,10 +46,11 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetUserByIdAsync_MustReturnException_WhenIdIsNotValidOrThereIsNoUser()
         {
             var mockRepo = new Mock<IUserService>();
+            var mockRepo2 = new Mock<ICharacterSheetService>();
             mockRepo.Setup(repo => repo.GetUserByIdAsync(It.IsAny<int>()))
                     .ReturnsAsync((int id) => null);
 
-            var UserController = new UserController(mockRepo.Object);
+            var UserController = new UserController(mockRepo.Object, It.IsAny<ICharacterSheetService>());
 
             var actionResult = await UserController.GetUserByIdAsync(1);
             var notFound = actionResult as NotFoundResult;
@@ -63,6 +65,7 @@ namespace webapiUnitTests.ControllersUnitTests
             .Options;
 
             var mockRepo = new Mock<IUserService>();
+            var mockRepo2 = new Mock<ICharacterSheetService>();
             mockRepo.Setup(repo => repo.GetUserByIdAsync(It.IsAny<int>()))
             .ReturnsAsync((int id) => new User
             {
@@ -70,7 +73,8 @@ namespace webapiUnitTests.ControllersUnitTests
                 UserToken = 1,
                 DNDCharacters = Helpers.Characters()
             });
-            var UserController = new UserController(mockRepo.Object);
+            var UserController = new UserController(mockRepo.Object, It.IsAny<ICharacterSheetService>());
+
 
             var actionResult = await UserController.GetUserByIdAsync(1);
             var okResult = actionResult as OkObjectResult;

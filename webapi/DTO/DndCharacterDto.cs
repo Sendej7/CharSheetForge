@@ -1,18 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using webapi.Models.DND.Enums;
+﻿using webapi.Models.DND;
 using webapi.Models.DND.Enums.DND;
 
-namespace webapi.Models.DND
+namespace webapi.DTO
 {
-    public class DndCharacter
+    public class DndCharacterDto
     {
-        public int ID { get; set; }  // Primary key
-        public int UserToken { get; set; }
-        [JsonIgnore]
-        public virtual User? User { get; set; } 
-        public SystemType SystemType { get; set; } = SystemType.DND;
-
-        // Basic Information
         public string CharacterName { get; set; } = string.Empty;
         public CharacterClass Class { get; set; }
         public int Level { get; set; }
@@ -36,7 +28,7 @@ namespace webapi.Models.DND
         public int Initiative { get; set; }
 
         // Inventory and Equipment
-        public List<Equipment>? Equipment { get; set; }
+        public List<Equipment> Equipment { get; set; }
         public int Gold { get; set; }
 
         // Traits and Special Abilities
@@ -49,8 +41,7 @@ namespace webapi.Models.DND
         public string Backstory { get; set; } = string.Empty;
         public List<AllyAndOrganization> AlliesAndOrganizations { get; set; }
         public string AdditionalNotes { get; set; } = string.Empty;
-
-        public DndCharacter()
+        public DndCharacterDto()
         {
             // List Initialization
             Equipment = new List<Equipment>();
@@ -59,4 +50,5 @@ namespace webapi.Models.DND
             AlliesAndOrganizations = new List<AllyAndOrganization>();
         }
     }
+
 }

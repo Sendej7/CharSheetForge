@@ -26,9 +26,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetDNDCardByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int id) => Helpers.Characters()[0]);
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var character = await characterService.GetDNDCardByIdAsync(1);
 
             Assert.NotNull(character);
@@ -42,9 +43,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetDNDCardByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync((int id) => null);
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var character = characterService.GetDNDCardByIdAsync(1);
 
             Assert.ThrowsAsync<Exception>(() => characterService.GetDNDCardByIdAsync(0));
@@ -56,9 +58,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
-                mockRepo.Setup(repo => repo.GetAllDNDCharactersAsync())
+            var mockRepo2 = new Mock<IUserRepository>();
+            mockRepo.Setup(repo => repo.GetAllDNDCharactersAsync())
             .ReturnsAsync(Helpers.Characters());
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersAsync();
 
             Assert.NotNull(characters);
@@ -72,9 +75,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetDNDCardByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(() => null);
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = characterService.GetAllDNDCharactersAsync();
 
             Assert.NotNull(characters);
@@ -87,9 +91,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
             .ReturnsAsync((int id, SystemType systemType) => Helpers.Characters());
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>());
 
             Assert.NotNull(characters);
@@ -103,9 +108,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), null))
             .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1));
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1);
 
             Assert.NotNull(characters);
@@ -119,9 +125,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
             .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1 && c.SystemType == SystemType.DND));
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
 
             Assert.NotNull(characters);
@@ -135,9 +142,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), null))
             .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 10));
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersByFiltersAsync(10);
 
             Assert.NotNull(characters);
@@ -150,9 +158,10 @@ namespace webapiUnitTests.ServicesUnitTests
             .Options;
 
             var mockRepo = new Mock<ICharacterSheetRepository>();
+            var mockRepo2 = new Mock<IUserRepository>();
             mockRepo.Setup(repo => repo.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
             .ReturnsAsync((int UserToken, SystemType systemType) => Helpers.Characters().Where(c => c.UserToken == 1 && c.SystemType == SystemType.Cthulu));
-            var characterService = new CharacterSheetService(mockRepo.Object);
+            var characterService = new CharacterSheetService(mockRepo.Object, mockRepo2.Object);
             var characters = await characterService.GetAllDNDCharactersByFiltersAsync(1, SystemType.Cthulu);
 
             Assert.NotNull(characters);
