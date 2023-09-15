@@ -56,7 +56,7 @@ namespace webapi.Controllers
                 }
                 DndCharacter? dndCharacter = null;
                 dndCharacter = await _characterService.CreateCharacterAsync(userToken, dndCharacterDto);
-                if (user != null && dndCharacter != null)
+                if (dndCharacter != null)
                 {
                     await _userService.UpdateUserAndCharacterRelationship(userToken, dndCharacter.UserToken);
                 }
