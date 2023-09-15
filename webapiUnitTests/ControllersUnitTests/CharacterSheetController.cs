@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using webapi.Controllers;
+using webapi.DTO;
 using webapi.Interfaces;
+using webapi.Models;
 using webapi.Models.DND;
 using webapi.Models.DND.Enums;
 using Xunit;
@@ -116,7 +118,66 @@ namespace webapiUnitTests.ControllersUnitTests
 
             Assert.Empty(returnValue);
         }
+        [Fact]
+        public async Task CreateNewDndCharacter_ReturnsNotFound_WhenUserNotFound()
+        {
+            // Arrange
+            var mockUserService = new Mock<IUserService>();
+            var mockCharacterService = new Mock<ICharacterSheetService>();
+            mockUserService.Setup(s => s.GetUserByTokenAsync(It.IsAny<int>()))
+                           .ReturnsAsync((User?)null);
 
+            var controller = new CharacterSheetController(mockCharacterService.Object, mockUserService.Object);
+
+            // Act
+            var result = await controller.CreateNewDndCharacter(1, new DndCharacterDto());
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateNewDndCharacter_ReturnsBadRequest_WhenExceptionOccurs()
+        {
+            // Arrange
+            var mockUserService = new Mock<IUserService>();
+            var mockCharacterService = new Mock<ICharacterSheetService>();
+            mockUserService.Setup(s => s.GetUserByTokenAsync(It.IsAny<int>()))
+                           .ThrowsAsync(new Exception("An error occurred"));
+
+            var controller = new CharacterSheetController(mockCharacterService.Object, mockUserService.Object);
+
+            // Act
+            var result = await controller.CreateNewDndCharacter(1, new DndCharacterDto());
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal("An error occurred", badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task CreateNewDndCharacter_ReturnsOk_WhenSuccessful()
+        {
+            // Arrange
+            var mockUserService = new Mock<IUserService>();
+            var mockCharacterService = new Mock<ICharacterSheetService>();
+            var user = new User { ID = 1, UserToken = 1 };
+            var character = new DndCharacter { ID = 1, UserToken = 1 };
+
+            mockUserService.Setup(s => s.GetUserByTokenAsync(It.IsAny<int>()))
+                           .ReturnsAsync(user);
+            mockCharacterService.Setup(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()))
+                                .ReturnsAsync(character);
+
+            var controller = new CharacterSheetController(mockCharacterService.Object, mockUserService.Object);
+
+            // Act
+            var result = await controller.CreateNewDndCharacter(1, new DndCharacterDto());
+
+            // Assert
+            Assert.IsType<OkResult>(result);
+            mockUserService.Verify(m => m.UpdateUserAndCharacterRelationship(It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        }
 
     }
 }
