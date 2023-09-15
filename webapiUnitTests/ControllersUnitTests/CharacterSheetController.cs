@@ -19,10 +19,11 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetDNDCardById_ShouldReturnOk_WhenIdIsValid()
         {
             var mockService = new Mock<ICharacterSheetService>();
+            var mockService2 = new Mock<IUserService>();
             mockService.Setup(s => s.GetDNDCardByIdAsync(It.IsAny<int>()))
                        .ReturnsAsync(Helpers.Characters()[0]);
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetDNDCardById(1);
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -35,10 +36,11 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetDNDCardById_ShouldReturnNotFound_WhenIdIsInvalid()
         {
             var mockService = new Mock<ICharacterSheetService>();
+            var mockService2 = new Mock<IUserService>();
             mockService.Setup(s => s.GetDNDCardByIdAsync(It.IsAny<int>()))
                        .ReturnsAsync((DndCharacter?) null);
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetDNDCardById(1);
             Assert.IsType<NotFoundResult>(result);
@@ -48,10 +50,12 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetAllDNDCharacters_ShouldReturnOk()
         {
             var mockService = new Mock<ICharacterSheetService>();
+            var mockService2 = new Mock<IUserService>();
+
             mockService.Setup(s => s.GetAllDNDCharactersAsync())
                        .ReturnsAsync(Helpers.Characters());
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetAllDNDCharacters();
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -63,11 +67,13 @@ namespace webapiUnitTests.ControllersUnitTests
         [Fact]
         public async Task GetAllDNDCharactersByFilters_ShouldReturnOk()
         {
-            var mockService = new Mock<ICharacterSheetService>();
+            var mockService = new Mock<ICharacterSheetService>(); 
+            var mockService2 = new Mock<IUserService>();
+
             mockService.Setup(s => s.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType>()))
                        .ReturnsAsync(Helpers.Characters());
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetAllDNDCharactersByFilters(1, SystemType.DND);
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -79,10 +85,12 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetAllDNDCharacters_ShouldReturnOkWithEmptyList_WhenNoCharactersExist()
         {
             var mockService = new Mock<ICharacterSheetService>();
+            var mockService2 = new Mock<IUserService>();
+
             mockService.Setup(s => s.GetAllDNDCharactersAsync())
                        .ReturnsAsync(new List<DndCharacter>());
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetAllDNDCharacters();
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -95,10 +103,12 @@ namespace webapiUnitTests.ControllersUnitTests
         public async Task GetAllDNDCharactersByFilters_ShouldReturnOkWithEmptyList_WhenNoMatches()
         {
             var mockService = new Mock<ICharacterSheetService>();
+            var mockService2 = new Mock<IUserService>();
+
             mockService.Setup(s => s.GetAllDNDCharactersByFiltersAsync(It.IsAny<int>(), It.IsAny<SystemType?>()))
                        .ReturnsAsync(new List<DndCharacter>());
 
-            var controller = new CharacterSheetController(mockService.Object);
+            var controller = new CharacterSheetController(mockService.Object, mockService2.Object);
 
             var result = await controller.GetAllDNDCharactersByFilters(1, SystemType.DND);
             var okResult = Assert.IsType<OkObjectResult>(result);
