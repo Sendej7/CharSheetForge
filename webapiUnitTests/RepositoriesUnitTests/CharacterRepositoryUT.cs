@@ -181,5 +181,56 @@ namespace webapiUnitTests.RepositoriesUnitTests
             Assert.NotNull(characters);
             Assert.Empty(characters);
         }
+        [Fact]
+        public async Task Should_Successfully_Create_Character()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                var newCharacter = Helpers.Characters()[0]; // Gets the first test character
+                var result = await characterSheetRepository.CreateCharacterAsync(newCharacter);
+
+                Assert.NotNull(result);
+                Assert.Equal(1, context.DNDCharacters.Count());
+            }
+        }
+
+        [Fact]
+        public async Task Should_Set_UserToken_Correctly()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                var newCharacter = Helpers.Characters()[1]; // Gets the second test character
+                var result = await characterSheetRepository.CreateCharacterAsync(newCharacter);
+
+                Assert.NotNull(result);
+                Assert.Equal(2, result.UserToken);
+            }
+        }
+
+        [Fact]
+        public async Task Should_Fail_To_Create_Null_Character()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            DndCharacter? nullCharacter = null;
+
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                await Assert.ThrowsAsync<NullReferenceException>(() => characterSheetRepository.CreateCharacterAsync(nullCharacter!));
+            }
+        }
     }
 }
