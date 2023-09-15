@@ -39,6 +39,11 @@ namespace webapi.Repositories
             return await query.ToListAsync();
         }
 
-
+        public async Task<DndCharacter> CreateCharacterAsync(DndCharacter character)
+        {
+            _context.DNDCharacters.Add(character);
+            await _context.SaveChangesAsync();
+            return character;
+        }
     }
 }

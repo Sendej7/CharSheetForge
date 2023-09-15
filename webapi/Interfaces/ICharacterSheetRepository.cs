@@ -10,5 +10,6 @@ namespace webapi.Interfaces
 
         Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync();
         Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
+        Task<DndCharacter> CreateCharacterAsync(DndCharacter character);
     }
 }
