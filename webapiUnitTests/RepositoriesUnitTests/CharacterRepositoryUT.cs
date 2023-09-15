@@ -232,5 +232,6 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 await Assert.ThrowsAsync<NullReferenceException>(() => characterSheetRepository.CreateCharacterAsync(nullCharacter!));
             }
         }
+
     }
 }
