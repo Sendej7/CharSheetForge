@@ -117,5 +117,68 @@ namespace webapiUnitTests.RepositoriesUnitTests
             // Assert
             Assert.False(result);
         }
+        [Fact]
+        public async Task GetUserByTokenAsync_ShouldReturnUser_WhenUserExists()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+
+            using (var context = new CharSheetContext(options))
+            {
+                context.BaseCharacters.Add(new User { ID = 1, UserToken = 1 });
+                await context.SaveChangesAsync();
+            }
+
+            User? retrievedUser;
+            using (var context = new CharSheetContext(options))
+            {
+                var userRepository = new UserRepository(context);
+                retrievedUser = await userRepository.GetUserByTokenAsync(1);
+            }
+
+            Assert.NotNull(retrievedUser);
+            Assert.Equal(1, retrievedUser?.ID);
+            Assert.Equal(1, retrievedUser?.UserToken);
+        }
+        [Fact]
+        public async Task GetUserByTokenAsync_ShouldReturnNull_WhenUserDoesNotExist()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+
+            User? retrievedUser;
+            using (var context = new CharSheetContext(options))
+            {
+                var userRepository = new UserRepository(context);
+                retrievedUser = await userRepository.GetUserByTokenAsync(1);
+            }
+
+            Assert.Null(retrievedUser);
+        }
+
+        [Fact]
+        public async Task CreateUserAsync_ShouldCreateAndReturnUser()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+
+            User createdUser;
+            using (var context = new CharSheetContext(options))
+            {
+                var userRepository = new UserRepository(context);
+                createdUser = await userRepository.CreateUserAsync(new User { UserToken = 1 });
+            }
+
+            // Verify the created user
+            using (var context = new CharSheetContext(options))
+            {
+                var user = await context.BaseCharacters.FindAsync(createdUser.ID);
+                Assert.NotNull(user);
+                Assert.Equal(1, user.UserToken);
+            }
+        }
     }
 }
