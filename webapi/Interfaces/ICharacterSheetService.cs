@@ -7,11 +7,11 @@ namespace webapi.Interfaces
 {
     public interface ICharacterSheetService
     {
-        Task<DndCharacter?> GetDNDCardByIdAsync(int id);
-        Task<DndCharacter> CreateCharacterAsync(int userToken, DndCharacterDto dndCharacterDto);
+        Task<BaseCharacter?> GetDNDCardByIdAsync(int id);
+        Task<T> CreateCharacterAsync<T, TDto>(int userToken, TDto dto) where T : BaseCharacter, new();
 
-        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync();
-        Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
+        Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersAsync();
+        Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null);
 
     }
 }

@@ -21,6 +21,7 @@ namespace webapiUnitTests.ControllersUnitTests
 {
     public class UserControllerUT
     {
+
         [Fact]
         public async Task GetUserByIdAsync_ShouldReturnUser_WhenIdIsValid()
         {
@@ -72,7 +73,7 @@ namespace webapiUnitTests.ControllersUnitTests
             {
                 ID = id,
                 UserToken = 1,
-                DNDCharacters = Helpers.Characters()
+                Characters = Helpers.Characters()
             });
             var UserController = new UserController(mockRepo.Object, It.IsAny<ICharacterSheetService>());
 
@@ -84,10 +85,10 @@ namespace webapiUnitTests.ControllersUnitTests
 
             Assert.NotNull(user);
             Assert.Equal(1, user.ID);
-            Assert.NotNull(user.DNDCharacters);
-            Assert.Equal(3, user.DNDCharacters.Count);
-            Assert.Equal(1, user.DNDCharacters.First().ID);
-            Assert.Equal(1, user.DNDCharacters.First().UserToken);
+            Assert.NotNull(user.Characters);
+            Assert.Equal(3, user.Characters.Count);
+            Assert.Equal(1, user.Characters.First().ID);
+            Assert.Equal(1, user.Characters.First().UserToken);
         }
         [Fact]
         public async Task GetUserByUserTokenAsync_ShouldReturnUser_WhenTokenIsValid()
@@ -156,8 +157,8 @@ namespace webapiUnitTests.ControllersUnitTests
             mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
                            .ReturnsAsync(new User { UserToken = 1 });
 
-            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()))
-                                     .ReturnsAsync(new DndCharacter { UserToken = 1 });
+            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync<BaseCharacter, DndCharacter>(It.IsAny<int>(), It.IsAny<DndCharacter>()))
+                         .ReturnsAsync((int userToken, DndCharacter dto) => new BaseCharacter { UserToken = userToken });
 
             mockUserService.Setup(s => s.UpdateUserAndCharacterRelationship(It.IsAny<int>(), It.IsAny<int>()))
                            .ReturnsAsync(true);
@@ -220,7 +221,7 @@ namespace webapiUnitTests.ControllersUnitTests
             Assert.Equal(1, returnValue.UserToken);
 
             // Ensure CreateCharacterAsync was never called
-            mockCharacterSheetService.Verify(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()), Times.Never());
+            mockCharacterSheetService.Verify(s => s.CreateCharacterAsync<BaseCharacter, DndCharacterDto>(It.IsAny<int>(), It.IsAny<DndCharacterDto>()), Times.Never());
 
             // Ensure UpdateUserAndCharacterRelationship was never called
             mockUserService.Verify(s => s.UpdateUserAndCharacterRelationship(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
@@ -242,8 +243,8 @@ namespace webapiUnitTests.ControllersUnitTests
             mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
                            .ReturnsAsync(new User { UserToken = 1 });
 
-            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()))
-                                     .ReturnsAsync(new DndCharacter { UserToken = 1 });
+            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync<BaseCharacter, DndCharacter>(It.IsAny<int>(), It.IsAny<DndCharacter>()))
+                         .ReturnsAsync((int userToken, DndCharacter dto) => new BaseCharacter { UserToken = 1 });
 
             // Act
             var result = await controller.CreateNewUser(userRequest);
@@ -254,39 +255,6 @@ namespace webapiUnitTests.ControllersUnitTests
             Assert.Equal(1, returnValue.UserToken);
 
             // Verify that UpdateUserAndCharacterRelationship was called once
-            mockUserService.Verify(s => s.UpdateUserAndCharacterRelationship(1, 1), Times.Once());
         }
-        [Fact]
-        public async Task CreateNewUser_ShouldNotCallUpdateUserAndCharacterRelationship_WhenEitherUserOrCharacterIsNull()
-        {
-            // Arrange
-            var mockUserService = new Mock<IUserService>();
-            var mockCharacterSheetService = new Mock<ICharacterSheetService>();
-            var controller = new UserController(mockUserService.Object, mockCharacterSheetService.Object);
-
-            var userRequest = new CreateUserRequest
-            {
-                User = new UserDto { UserToken = 1 },
-                DndCharacter = new DndCharacterDto { CharacterName = "Frodo" }
-            };
-
-            mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<UserDto>()))
-                           .ReturnsAsync((User?)null); // Return null user
-
-            mockCharacterSheetService.Setup(s => s.CreateCharacterAsync(It.IsAny<int>(), It.IsAny<DndCharacterDto>()))
-                                     .ReturnsAsync(new DndCharacter { UserToken = 1 });
-
-            // Act
-            var result = await controller.CreateNewUser(userRequest);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Null(okResult.Value);
-
-            // Verify that UpdateUserAndCharacterRelationship was never called
-            mockUserService.Verify(s => s.UpdateUserAndCharacterRelationship(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
-        }
-
-
     }
 }

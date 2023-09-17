@@ -46,7 +46,7 @@ namespace webapi.Controllers
                 DndCharacter? dndCharacter = null;
                 if(userRequest.DndCharacter != null)
                 {
-                    dndCharacter = await _characterSheetService.CreateCharacterAsync(userRequest.User.UserToken, userRequest.DndCharacter);
+                    dndCharacter = await _characterSheetService.CreateCharacterAsync<DndCharacter, DndCharacterDto>(user.UserToken, userRequest.DndCharacter);
                 }
                 if(user!= null && dndCharacter != null)
                 {

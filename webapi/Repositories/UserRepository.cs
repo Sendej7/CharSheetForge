@@ -17,11 +17,11 @@ namespace webapi.Repositories
 
         public async Task<User?> GetUserByIdAsync(int id)
         {
-            return await _context.BaseCharacters.Include(u => u.DNDCharacters).FirstOrDefaultAsync(u => u.ID == id);
+            return await _context.BaseCharacters.Include(u => u.Characters).FirstOrDefaultAsync(u => u.ID == id);
         }
         public async Task<User?> GetUserByTokenAsync(int userToken)
         {
-            return await _context.BaseCharacters.Include(u => u.DNDCharacters).Where(u => u.UserToken == userToken).FirstOrDefaultAsync();
+            return await _context.BaseCharacters.Include(u => u.Characters).Where(u => u.UserToken == userToken).FirstOrDefaultAsync();
         }
         public async Task<User> CreateUserAsync(User user)
         {

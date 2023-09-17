@@ -3,6 +3,7 @@
     public enum SystemType
     {
         DND,
-        Cthulu
+        Cthulu,
+        BASE
     }
 }

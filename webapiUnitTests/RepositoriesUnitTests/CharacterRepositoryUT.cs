@@ -30,7 +30,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 context.DNDCharacters.AddRange(Helpers.Characters());
                 context.SaveChanges();
             }
-            DndCharacter? character = new DndCharacter();
+            BaseCharacter? character = new BaseCharacter();
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -68,7 +68,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 context.DNDCharacters.AddRange(Helpers.Characters());
                 context.SaveChanges();
             }
-            IEnumerable<DndCharacter> characters = new List<DndCharacter>();
+            IEnumerable<BaseCharacter> characters = new List<DndCharacter>();
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -86,7 +86,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-            IEnumerable<DndCharacter?> characters;
+            IEnumerable<BaseCharacter?> characters;
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -108,7 +108,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 context.DNDCharacters.AddRange(Helpers.Characters());
                 context.SaveChanges();
             }
-            IEnumerable<DndCharacter> characters;
+            IEnumerable<BaseCharacter> characters;
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -131,7 +131,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 context.DNDCharacters.AddRange(Helpers.Characters());
                 context.SaveChanges();
             }
-            IEnumerable<DndCharacter> characters;
+            IEnumerable<BaseCharacter> characters;
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -149,7 +149,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-            IEnumerable<DndCharacter> characters;
+            IEnumerable<BaseCharacter> characters;
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -171,7 +171,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 context.DNDCharacters.AddRange(Helpers.Characters());
                 context.SaveChanges();
             }
-            IEnumerable<DndCharacter> characters;
+            IEnumerable<BaseCharacter> characters;
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
@@ -234,4 +234,5 @@ namespace webapiUnitTests.RepositoriesUnitTests
         }
 
     }
+
 }

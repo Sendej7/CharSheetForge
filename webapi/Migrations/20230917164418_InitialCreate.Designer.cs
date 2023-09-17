@@ -12,7 +12,7 @@ using webapi.Data;
 namespace webapi.Migrations
 {
     [DbContext(typeof(CharSheetContext))]
-    [Migration("20230915093451_InitialCreate")]
+    [Migration("20230917164418_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,45 @@ namespace webapi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("webapi.Models.BaseCharacter", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("CardToken")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CharacterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SystemType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserToken")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserToken");
+
+                    b.ToTable("DNDCharacters");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BASE");
+
+                    b.UseTphMappingStrategy();
+                });
 
             modelBuilder.Entity("webapi.Models.DND.AllyAndOrganization", b =>
                 {
@@ -104,92 +143,6 @@ namespace webapi.Migrations
                     b.HasIndex("DndCharacterID");
 
                     b.ToTable("AttackAndSpellcasting");
-                });
-
-            modelBuilder.Entity("webapi.Models.DND.DndCharacter", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("AdditionalNotes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Alignment")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArmorClass")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Background")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Backstory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CharacterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Charisma")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Class")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Constitution")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Dexterity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gold")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HitPoints")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Initiative")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Intelligence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlayerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Race")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Speed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Strength")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SystemType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserToken")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wisdom")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("UserToken");
-
-                    b.ToTable("DNDCharacters");
                 });
 
             modelBuilder.Entity("webapi.Models.DND.Equipment", b =>
@@ -284,6 +237,83 @@ namespace webapi.Migrations
                     b.ToTable("BaseCharacters");
                 });
 
+            modelBuilder.Entity("webapi.Models.DND.DndCharacter", b =>
+                {
+                    b.HasBaseType("webapi.Models.BaseCharacter");
+
+                    b.Property<string>("AdditionalNotes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Alignment")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArmorClass")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Background")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Backstory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Charisma")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Class")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Constitution")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Dexterity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Gold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HitPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Initiative")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Intelligence")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Race")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Strength")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Wisdom")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("DND");
+                });
+
+            modelBuilder.Entity("webapi.Models.BaseCharacter", b =>
+                {
+                    b.HasOne("webapi.Models.User", "User")
+                        .WithMany("Characters")
+                        .HasForeignKey("UserToken")
+                        .HasPrincipalKey("UserToken")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("webapi.Models.DND.AllyAndOrganization", b =>
                 {
                     b.HasOne("webapi.Models.DND.DndCharacter", null)
@@ -296,18 +326,6 @@ namespace webapi.Migrations
                     b.HasOne("webapi.Models.DND.DndCharacter", null)
                         .WithMany("AttacksAndSpellcasting")
                         .HasForeignKey("DndCharacterID");
-                });
-
-            modelBuilder.Entity("webapi.Models.DND.DndCharacter", b =>
-                {
-                    b.HasOne("webapi.Models.User", "User")
-                        .WithMany("DNDCharacters")
-                        .HasForeignKey("UserToken")
-                        .HasPrincipalKey("UserToken")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("webapi.Models.DND.Equipment", b =>
@@ -324,6 +342,11 @@ namespace webapi.Migrations
                         .HasForeignKey("DndCharacterID");
                 });
 
+            modelBuilder.Entity("webapi.Models.User", b =>
+                {
+                    b.Navigation("Characters");
+                });
+
             modelBuilder.Entity("webapi.Models.DND.DndCharacter", b =>
                 {
                     b.Navigation("AlliesAndOrganizations");
@@ -333,11 +356,6 @@ namespace webapi.Migrations
                     b.Navigation("Equipment");
 
                     b.Navigation("FeaturesAndTraits");
-                });
-
-            modelBuilder.Entity("webapi.Models.User", b =>
-                {
-                    b.Navigation("DNDCharacters");
                 });
 #pragma warning restore 612, 618
         }
