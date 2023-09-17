@@ -57,7 +57,7 @@ namespace webapiUnitTests.ServicesUnitTests
             {
                 ID = id,
                 UserToken = 1,
-                DNDCharacters = Helpers.Characters()
+                Characters = Helpers.Characters()
             });
 
             var UserService = new UserService(mockRepo.Object);
@@ -65,10 +65,10 @@ namespace webapiUnitTests.ServicesUnitTests
 
             Assert.NotNull(User);
             Assert.Equal(1, User.ID);
-            Assert.NotNull(User.DNDCharacters);
-            Assert.Equal(3, User.DNDCharacters.Count);
-            Assert.Equal(1, User.DNDCharacters.First().ID);
-            Assert.Equal(1, User.DNDCharacters.First().UserToken);
+            Assert.NotNull(User.Characters);
+            Assert.Equal(3, User.Characters.Count);
+            Assert.Equal(1, User.Characters.First().ID);
+            Assert.Equal(1, User.Characters.First().UserToken);
         }
         [Fact]
         public async Task GetUserByTokenAsync_ShouldReturnUser_WhenTokenIsValid()
@@ -162,7 +162,6 @@ namespace webapiUnitTests.ServicesUnitTests
             // Assert that the result is what we expect
             Assert.False(result);
         }
-
 
 
 

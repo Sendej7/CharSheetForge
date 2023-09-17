@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.DTO;
 using webapi.Interfaces;
@@ -13,11 +14,13 @@ namespace webapi.Controllers
     [ApiController]
     public class CharacterSheetController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ICharacterSheetService _characterService;
         private readonly IUserService _userService;
 
-        public CharacterSheetController(ICharacterSheetService characterService, IUserService userService)
+        public CharacterSheetController(IMapper mapper, ICharacterSheetService characterService, IUserService userService)
         {
+            _mapper = mapper;
             _characterService = characterService;
             _userService = userService;
         }
@@ -43,6 +46,14 @@ namespace webapi.Controllers
             var filteredDNDCharacters = await _characterService.GetAllDNDCharactersByFiltersAsync(baseCharacterId, systemType);
             return Ok(filteredDNDCharacters);
         }
+        [HttpPost("create/dnd")]
+        public async Task<IActionResult> CreateDndCharacter(DndCharacterDto dndCharacterDto)
+        {
+            var dndCharacter = _mapper.Map<DndCharacterDto>(dndCharacterDto);
+            //await _characterService.CreateCharacterAsync(3,dndCharacter);
+            return Ok();
+        }
+
         [HttpPost("{userToken}")]
         public async Task<IActionResult> CreateNewDndCharacter(int userToken, DndCharacterDto dndCharacterDto)
         {
@@ -54,8 +65,7 @@ namespace webapi.Controllers
                 {
                     return NotFound();
                 }
-                DndCharacter? dndCharacter = null;
-                dndCharacter = await _characterService.CreateCharacterAsync(userToken, dndCharacterDto);
+                var dndCharacter = await _characterService.CreateCharacterAsync<DndCharacter, DndCharacterDto>(userToken, dndCharacterDto);
                 if (dndCharacter != null)
                 {
                     await _userService.UpdateUserAndCharacterRelationship(userToken, dndCharacter.UserToken);

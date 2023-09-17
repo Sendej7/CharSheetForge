@@ -12,9 +12,9 @@ namespace webapiUnitTests
 {
     internal class Helpers
     {
-        public static List<DndCharacter> Characters()
+        public static List<BaseCharacter> Characters()
         {
-            return new List<DndCharacter>
+            return new List<BaseCharacter>
             {
                 new DndCharacter
                 {

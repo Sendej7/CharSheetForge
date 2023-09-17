@@ -16,16 +16,16 @@ namespace webapi.Repositories
             _context = context;
         }
 
-        public async Task<DndCharacter?> GetDNDCardByIdAsync(int id)
+        public async Task<BaseCharacter?> GetDNDCardByIdAsync(int id)
         {
             return await _context.DNDCharacters.FindAsync(id);
         }
-        public async Task<IEnumerable<DndCharacter>> GetAllDNDCharactersAsync()
+        public async Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersAsync()
         {
             return await _context.DNDCharacters.ToListAsync();
         }
 
-        public async Task<IEnumerable<DndCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
+        public async Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
         {
             var query = _context.DNDCharacters.AsQueryable();
 
@@ -39,7 +39,7 @@ namespace webapi.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<DndCharacter> CreateCharacterAsync(DndCharacter character)
+        public async Task<T> CreateCharacterAsync<T>(T character) where T : BaseCharacter
         {
             _context.DNDCharacters.Add(character);
             await _context.SaveChangesAsync();

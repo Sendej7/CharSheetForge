@@ -1,6 +1,9 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.DTO;
 using webapi.Interfaces;
+using webapi.Models.DND;
 using webapi.Repositories;
 using webapi.Services;
 
@@ -19,6 +22,13 @@ builder.Services.AddScoped<ICharacterSheetService, CharacterSheetService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.CreateMap<DndCharacterDto, DndCharacter>();
+});
+
+IMapper mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
