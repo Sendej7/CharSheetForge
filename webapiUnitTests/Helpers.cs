@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using webapi.Models.DND.Enums.DND;
-using webapi.Models.DND.Enums;
 using webapi.Models.DND;
 using webapi.Models;
 
@@ -20,6 +19,7 @@ namespace webapiUnitTests
                 {
                     ID = 1,
                     UserToken = 1,
+                    CardToken = 1,
                     User = new User { ID = 1, UserToken = 1 },
                     SystemType = SystemType.DND,
                     CharacterName = "Test Character 1",

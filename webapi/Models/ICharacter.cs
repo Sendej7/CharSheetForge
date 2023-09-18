@@ -1,6 +1,4 @@
-﻿using webapi.Models.DND.Enums;
-
-namespace webapi.Models
+﻿namespace webapi.Models
 {
     public interface ICharacter
     {

@@ -5,7 +5,6 @@ using webapi.DTO;
 using webapi.Interfaces;
 using webapi.Models;
 using webapi.Models.DND;
-using webapi.Models.DND.Enums;
 using webapi.Services;
 
 namespace webapi.Controllers
@@ -24,37 +23,37 @@ namespace webapi.Controllers
             _characterService = characterService;
             _userService = userService;
         }
-        [HttpGet("dnd/{id}")]
-        public async Task<IActionResult> GetDNDCardById(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCharacterSheetByIdAsync(int id)
         {
-            var dndCard = await _characterService.GetDNDCardByIdAsync(id);
+            var dndCard = await _characterService.GetCharacterSheetByIdAsync(id);
             if (dndCard == null)
                 return NotFound();
             return Ok(dndCard);
         }
 
-        [HttpGet("dnd")]
-        public async Task<IActionResult> GetAllDNDCharacters()
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllCharacterSheetsAsync()
         {
-            var dndCharacters = await _characterService.GetAllDNDCharactersAsync();
+            var dndCharacters = await _characterService.GetAllCharacterSheetsAsync();
             return Ok(dndCharacters);
         }
-
-        [HttpGet("dnd/filter")]
-        public async Task<IActionResult> GetAllDNDCharactersByFilters([FromQuery] int baseCharacterId, [FromQuery] SystemType? systemType = null)
+        [HttpGet("all/system-type-filter")]
+        public async Task<IActionResult> GetCharacterSheetsFilteredBySystemTypeAsync([FromQuery] SystemType systemType)
         {
-            var filteredDNDCharacters = await _characterService.GetAllDNDCharactersByFiltersAsync(baseCharacterId, systemType);
+            var dndCard = await _characterService.GetCharacterSheetsFilteredBySystemTypeAsync(systemType);
+            if (dndCard == null)
+                return NotFound();
+            return Ok(dndCard);
+        }
+        [HttpGet("all/user-token-system-type-filter")]
+        public async Task<IActionResult> GetAllCharacterSheetsByFiltersAsync([FromQuery] int userToken, [FromQuery] SystemType? systemType = null)
+        {
+            var filteredDNDCharacters = await _characterService.GetAllCharacterSheetsByFiltersAsync(userToken, systemType);
             return Ok(filteredDNDCharacters);
         }
-        [HttpPost("create/dnd")]
-        public async Task<IActionResult> CreateDndCharacter(DndCharacterDto dndCharacterDto)
-        {
-            var dndCharacter = _mapper.Map<DndCharacterDto>(dndCharacterDto);
-            //await _characterService.CreateCharacterAsync(3,dndCharacter);
-            return Ok();
-        }
 
-        [HttpPost("{userToken}")]
+        [HttpPost("create/{userToken}")]
         public async Task<IActionResult> CreateNewDndCharacter(int userToken, DndCharacterDto dndCharacterDto)
         {
             try

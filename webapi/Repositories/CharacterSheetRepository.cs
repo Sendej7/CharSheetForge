@@ -3,7 +3,6 @@ using webapi.Data;
 using webapi.Interfaces;
 using webapi.Models;
 using webapi.Models.DND;
-using webapi.Models.DND.Enums;
 
 namespace webapi.Repositories
 {
@@ -16,16 +15,21 @@ namespace webapi.Repositories
             _context = context;
         }
 
-        public async Task<BaseCharacter?> GetDNDCardByIdAsync(int id)
+        public async Task<BaseCharacter?> GetCharacterSheetByIdAsync(int id)
         {
             return await _context.DNDCharacters.FindAsync(id);
         }
-        public async Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersAsync()
+        public async Task<IEnumerable<BaseCharacter>> GetAllCharacterSheetsAsync()
         {
             return await _context.DNDCharacters.ToListAsync();
         }
-
-        public async Task<IEnumerable<BaseCharacter>> GetAllDNDCharactersByFiltersAsync(int UserToken, SystemType? systemType = null)
+        public async Task<IEnumerable<BaseCharacter>> GetCharacterSheetsFilteredBySystemTypeAsync(SystemType systemType)
+        {
+            var query = _context.DNDCharacters.AsQueryable();
+            query = query.Where(c => c.SystemType == systemType);
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<BaseCharacter>> GetAllCharacterSheetsByFiltersAsync(int UserToken, SystemType? systemType = null)
         {
             var query = _context.DNDCharacters.AsQueryable();
 

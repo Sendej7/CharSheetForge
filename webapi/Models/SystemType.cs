@@ -1,4 +1,4 @@
-﻿namespace webapi.Models.DND.Enums
+﻿namespace webapi.Models
 {
     public enum SystemType
     {
