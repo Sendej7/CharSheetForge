@@ -9,7 +9,6 @@ using webapi.Data;
 using webapi.Interfaces;
 using webapi.Models;
 using webapi.Models.DND;
-using webapi.Models.DND.Enums;
 using webapi.Repositories;
 using webapi.Services;
 using Xunit;
@@ -34,7 +33,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                character = await characterSheetRepository.GetDNDCardByIdAsync(1);
+                character = await characterSheetRepository.GetCharacterSheetByIdAsync(1);
             }
 
             // Assert
@@ -53,7 +52,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                Assert.ThrowsAsync<Exception>(() => characterSheetRepository.GetDNDCardByIdAsync(1));
+                Assert.ThrowsAsync<Exception>(() => characterSheetRepository.GetCharacterSheetByIdAsync(1));
             }
         }
         [Fact]
@@ -72,7 +71,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersAsync();
+                characters = await characterSheetRepository.GetAllCharacterSheetsAsync();
             }
 
             Assert.NotNull(characters);
@@ -90,7 +89,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersAsync();
+                characters = await characterSheetRepository.GetAllCharacterSheetsAsync();
             }
 
             Assert.NotNull(characters);
@@ -112,7 +111,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersByFiltersAsync(1);
+                characters = await characterSheetRepository.GetAllCharacterSheetsByFiltersAsync(1);
             }
 
             Assert.NotNull(characters);
@@ -135,7 +134,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
+                characters = await characterSheetRepository.GetAllCharacterSheetsByFiltersAsync(1, SystemType.DND);
             }
 
             Assert.NotNull(characters);
@@ -153,7 +152,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersByFiltersAsync(1, SystemType.DND);
+                characters = await characterSheetRepository.GetAllCharacterSheetsByFiltersAsync(1, SystemType.DND);
             }
 
             Assert.NotNull(characters);
@@ -175,7 +174,7 @@ namespace webapiUnitTests.RepositoriesUnitTests
             using (var context = new CharSheetContext(options))
             {
                 var characterSheetRepository = new CharacterSheetRepository(context);
-                characters = await characterSheetRepository.GetAllDNDCharactersByFiltersAsync(1, SystemType.Cthulu);
+                characters = await characterSheetRepository.GetAllCharacterSheetsByFiltersAsync(1, SystemType.Cthulu);
             }
 
             Assert.NotNull(characters);
@@ -232,7 +231,73 @@ namespace webapiUnitTests.RepositoriesUnitTests
                 await Assert.ThrowsAsync<NullReferenceException>(() => characterSheetRepository.CreateCharacterAsync(nullCharacter!));
             }
         }
+        [Fact]
+        public async Task GetCharacterSheetsFilteredBySystemTypeAsync_ShouldReturnMatchingCharacterSheets()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
 
+            // Seed data
+            using (var context = new CharSheetContext(options))
+            {
+                context.DNDCharacters.AddRange(Helpers.Characters());
+                await context.SaveChangesAsync();
+            }
+
+            IEnumerable<BaseCharacter> characters;
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                characters = await characterSheetRepository.GetCharacterSheetsFilteredBySystemTypeAsync(SystemType.DND);
+            }
+
+            Assert.NotNull(characters);
+            Assert.NotEmpty(characters);
+            Assert.All(characters, c => Assert.Equal(SystemType.DND, c.SystemType));
+        }
+        [Fact]
+        public async Task GetCharacterSheetsFilteredBySystemTypeAsync_ShouldReturnEmptyList_WhenNoMatchingSystemType()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            // Seed data
+            using (var context = new CharSheetContext(options))
+            {
+                context.DNDCharacters.AddRange(Helpers.Characters());
+                await context.SaveChangesAsync();
+            }
+
+            IEnumerable<BaseCharacter> characters;
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                characters = await characterSheetRepository.GetCharacterSheetsFilteredBySystemTypeAsync(SystemType.Cthulu);
+            }
+
+            Assert.NotNull(characters);
+            Assert.Empty(characters);
+        }
+
+        [Fact]
+        public async Task GetCharacterSheetsFilteredBySystemTypeAsync_ShouldReturnEmptyList_WhenDatabaseIsEmpty()
+        {
+            var options = new DbContextOptionsBuilder<CharSheetContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            IEnumerable<BaseCharacter> characters;
+            using (var context = new CharSheetContext(options))
+            {
+                var characterSheetRepository = new CharacterSheetRepository(context);
+                characters = await characterSheetRepository.GetCharacterSheetsFilteredBySystemTypeAsync(SystemType.DND);
+            }
+
+            Assert.NotNull(characters);
+            Assert.Empty(characters);
+        }
     }
 
 }

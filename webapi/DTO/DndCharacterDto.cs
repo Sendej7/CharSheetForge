@@ -12,6 +12,7 @@ namespace webapi.DTO
         public CharacterRace Race { get; set; }
         public CharacterAlignment Alignment { get; set; }
         public string PlayerName { get; set; } = string.Empty;
+        public int CardToken { get; set; }
 
         // Statistics
         public int Strength { get; set; }
