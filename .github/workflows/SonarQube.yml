@@ -29,7 +29,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-      - name: Setup Node.js for React app
+      
+      # Setup Node.js for Angular app
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
@@ -56,11 +58,12 @@ jobs:
       - name: Build .NET Project
         run: dotnet build
 
-      - name: Build React App
+      # Build Angular App
+      - name: Build Angular App
         run: |
-          cd reactapp
+          cd angular
           npm install
-          npm run build
+          ng build
 
       - name: Run Sonar Analysis and Unit Tests for .NET
         run: |
