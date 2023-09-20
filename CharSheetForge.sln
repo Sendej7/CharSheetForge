@@ -3,13 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reactapp", "reactapp\reactapp.esproj", "{DEAD40C6-B589-44B4-91A7-8A82C566C608}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapi", "webapi\webapi.csproj", "{65423FE8-1314-4121-9AB8-DF78ADFFFDF4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapiUnitTests", "webapiUnitTests\webapiUnitTests.csproj", "{0BDD30C8-22E8-4C10-A6D9-24EE76C978AF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{65423FE8-1314-4121-9AB8-DF78ADFFFDF4} = {65423FE8-1314-4121-9AB8-DF78ADFFFDF4}
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "angular", "angular\", "{573CBF50-357E-47EA-95C6-77459F5CC1F3}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62068"
+		Debug.AspNetCompiler.PhysicalPath = "angular\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62068\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62068"
+		Release.AspNetCompiler.PhysicalPath = "angular\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62068\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62068"
+		SlnRelativePath = "angular\"
 	EndProjectSection
 EndProject
 Global
@@ -18,12 +37,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DEAD40C6-B589-44B4-91A7-8A82C566C608}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{65423FE8-1314-4121-9AB8-DF78ADFFFDF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65423FE8-1314-4121-9AB8-DF78ADFFFDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65423FE8-1314-4121-9AB8-DF78ADFFFDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +45,10 @@ Global
 		{0BDD30C8-22E8-4C10-A6D9-24EE76C978AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BDD30C8-22E8-4C10-A6D9-24EE76C978AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BDD30C8-22E8-4C10-A6D9-24EE76C978AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573CBF50-357E-47EA-95C6-77459F5CC1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573CBF50-357E-47EA-95C6-77459F5CC1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573CBF50-357E-47EA-95C6-77459F5CC1F3}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{573CBF50-357E-47EA-95C6-77459F5CC1F3}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
