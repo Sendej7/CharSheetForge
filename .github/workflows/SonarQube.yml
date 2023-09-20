@@ -58,13 +58,6 @@ jobs:
       - name: Build .NET Project (Web API)
         run: dotnet build ./webapi/webapi.csproj
 
-      # Build Angular App
-      - name: Build Angular App
-        run: |
-          cd angular
-          npm install -g @angular/cli
-          npm install
-          ng build
           
       - name: Build .NET Unit Tests (Opcjonalnie)
         run: dotnet build ./webapiUnitTests/webapiUnitTests.csproj
@@ -76,3 +69,10 @@ jobs:
           dotnet test ./webapiUnitTests/webapiUnitTests.csproj --no-build --collect:"XPlat Code Coverage"  # Dodaję ścieżkę do projektu testowego
           reportgenerator "-reports:./webapiUnitTests/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"  # Poprawiam ścieżkę do raportów
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Build Angular App
+        run: |
+          cd angular
+          npm install -g @angular/cli
+          npm install
+          ng build
