@@ -55,8 +55,8 @@ jobs:
       - name: Install Sonar Scanner CLI
         run: choco install sonarqube-scanner.portable
 
-      - name: Build .NET Project
-        run: dotnet build
+      - name: Build .NET Project (Web API)
+        run: dotnet build ./webapi/webapi.csproj
 
       # Build Angular App
       - name: Build Angular App
@@ -64,7 +64,10 @@ jobs:
           cd angular
           npm install
           ng build
-
+          
+      - name: Build .NET Unit Tests (Opcjonalnie)
+        run: dotnet build ./webapiUnitTests/webapiUnitTests.csproj
+        
       - name: Run Sonar Analysis and Unit Tests for .NET
         run: |
           dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
