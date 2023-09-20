@@ -39,25 +39,10 @@ namespace webapiUnitTests
                     ArmorClass = 12,
                     Speed = 30,
                     Initiative = 2,
-                    Equipment = new List<Equipment>
-                    {
-                        new Equipment { Id = 1, Name = "Wand", Type = "Weapon", Description = "Magic wand", Weight = 1 },
-                        new Equipment { Id = 2, Name = "Robe", Type = "Armor", Description = "Mage robe", Weight = 2, ArmorClass = 1 }
-                    },
+
                     Gold = 100,
-                    FeaturesAndTraits = new List<FeatureAndTrait>
-                    {
-                        new FeatureAndTrait { Id = 1, Name = "Arcane Recovery", Description = "Recover spell slots", Source = "Class", LevelRequired = 1 }
-                    },
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>
-                    {
-                        new AttackAndSpellcasting { Id = 1, Name = "Fireball", Type = "Spell", Range = 150, Damage = 8, DamageType = "Fire", Components = "V, S, M", Duration = "Instantaneous" }
-                    },
                     Backstory = "Backstory goes here",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>
-                    {
-                        new AllyAndOrganization { Id = 1, Name = "Mages Guild", Type = "Organization", Description = "Guild of mages", Relationship = "Member", TrustLevel = 5 }
-                    },
+
                     AdditionalNotes = "Additional notes go here"
                 },
                 new DndCharacter
@@ -83,27 +68,11 @@ namespace webapiUnitTests
                     ArmorClass = 18, // Assuming plate armor and shield
                     Speed = 25, // Dwarves are generally slower
                     Initiative = 1,
-                    Equipment = new List<Equipment>
-                    {
-                        new Equipment { Id = 5, Name = "Longsword", Type = "Weapon", Description = "A trusty longsword", Weight = 3, Damage = 8 },
-                        new Equipment { Id = 6, Name = "Plate Armor", Type = "Armor", Description = "Heavy plate armor", Weight = 65, ArmorClass = 8 },
-                        new Equipment { Id = 7, Name = "Shield", Type = "Armor", Description = "A sturdy wooden shield", Weight = 6, ArmorClass = 2 }
-                    },
+
                     Gold = 150,
-                    FeaturesAndTraits = new List<FeatureAndTrait>
-                    {
-                        new FeatureAndTrait { Id = 3, Name = "Second Wind", Description = "Regain hit points in battle", Source = "Class", LevelRequired = 1 },
-                        new FeatureAndTrait { Id = 4, Name = "Action Surge", Description = "Extra action on your turn", Source = "Class", LevelRequired = 2 }
-                    },
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>
-                    {
-                        new AttackAndSpellcasting { Id = 3, Name = "Longsword Strike", Type = "Attack", Range = 5, Damage = 8, DamageType = "Slashing" }
-                    },
+
                     Backstory = "A former soldier who seeks glory and honor.",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>
-                    {
-                        new AllyAndOrganization { Id = 3, Name = "Military Unit", Type = "Organization", Description = "A military unit from the kingdom", Relationship = "Former member", TrustLevel = 4 }
-                    },
+
                     AdditionalNotes = "Holds a personal grudge against orcs"
                 },
                 new DndCharacter
@@ -129,25 +98,11 @@ namespace webapiUnitTests
                     ArmorClass = 14,
                     Speed = 35, // Elves are generally faster
                     Initiative = 3, // High dexterity increases initiative
-                    Equipment = new List<Equipment>
-                    {
-                        new Equipment { Id = 3, Name = "Dagger", Type = "Weapon", Description = "A sharp dagger", Weight = 1, Damage = 4 },
-                        new Equipment { Id = 4, Name = "Leather Armor", Type = "Armor", Description = "Light leather armor", Weight = 10, ArmorClass = 2 }
-                    },
+
                     Gold = 50,
-                    FeaturesAndTraits = new List<FeatureAndTrait>
-                    {
-                        new FeatureAndTrait { Id = 2, Name = "Sneak Attack", Description = "Extra damage when you have advantage", Source = "Class", LevelRequired = 1 }
-                    },
-                    AttacksAndSpellcasting = new List<AttackAndSpellcasting>
-                    {
-                        new AttackAndSpellcasting { Id = 2, Name = "Shortbow", Type = "Attack", Range = 80, Damage = 6, DamageType = "Piercing" }
-                    },
+
                     Backstory = "Raised in the streets, learned to fend for herself at an early age.",
-                    AlliesAndOrganizations = new List<AllyAndOrganization>
-                    {
-                        new AllyAndOrganization { Id = 2, Name = "Thieves Guild", Type = "Organization", Description = "A guild of skilled thieves", Relationship = "Member", TrustLevel = 3 }
-                    },
+
                     AdditionalNotes = "Has a pet mouse named Squeaky"
                 }
 

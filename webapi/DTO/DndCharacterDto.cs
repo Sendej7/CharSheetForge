@@ -1,5 +1,6 @@
 ﻿using webapi.Models.DND;
 using webapi.Models.DND.Enums.DND;
+using webapi.Models.Generics;
 
 namespace webapi.DTO
 {
@@ -14,7 +15,6 @@ namespace webapi.DTO
         public string PlayerName { get; set; } = string.Empty;
         public int CardToken { get; set; }
 
-        // Statistics
         public int Strength { get; set; }
         public int Dexterity { get; set; }
         public int Constitution { get; set; }
@@ -22,34 +22,16 @@ namespace webapi.DTO
         public int Wisdom { get; set; }
         public int Charisma { get; set; }
 
-        // Health and Defense
         public int HitPoints { get; set; }
         public int ArmorClass { get; set; }
         public int Speed { get; set; }
         public int Initiative { get; set; }
 
-        // Inventory and Equipment
-        public List<Equipment> Equipment { get; set; }
         public int Gold { get; set; }
 
-        // Traits and Special Abilities
-        public List<FeatureAndTrait> FeaturesAndTraits { get; set; }
-
-        // Attacks and Spells
-        public List<AttackAndSpellcasting> AttacksAndSpellcasting { get; set; }
-
-        // Other Information
         public string Backstory { get; set; } = string.Empty;
-        public List<AllyAndOrganization> AlliesAndOrganizations { get; set; }
         public string AdditionalNotes { get; set; } = string.Empty;
-        public DndCharacterDto()
-        {
-            // List Initialization
-            Equipment = new List<Equipment>();
-            FeaturesAndTraits = new List<FeatureAndTrait>();
-            AttacksAndSpellcasting = new List<AttackAndSpellcasting>();
-            AlliesAndOrganizations = new List<AllyAndOrganization>();
-        }
+
     }
 
 }

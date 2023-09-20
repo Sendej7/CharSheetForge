@@ -1,6 +1,8 @@
-﻿namespace webapi.Models.DND
+﻿using webapi.Models.Generics;
+
+namespace webapi.Models.DND
 {
-    public class AllyAndOrganization
+    public class AllyAndOrganization : ICharacterAssociable<AllyAndOrganization>
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -8,5 +10,6 @@
         public string Description { get; set; } = string.Empty;
         public string Relationship { get; set; } = string.Empty;// How is the character related?
         public int TrustLevel { get; set; } // A quantifiable measure of trust or standing
+        public List<CharacterAssociation<AllyAndOrganization>> Associations { get; set; }
     }
 }

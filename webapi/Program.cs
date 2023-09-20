@@ -23,6 +23,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICharacterSheetRepository, CharacterSheetRepository>();
 builder.Services.AddScoped<ICharacterSheetService, CharacterSheetService>();
 
+builder.Services.AddScoped<IGenericRepository<Equipment>, GenericRepository<Equipment>>(serviceProvider =>
+        new GenericRepository<Equipment>(serviceProvider.GetRequiredService<CharSheetContext>()));
+
+builder.Services.AddScoped<IGenericRepository<AllyAndOrganization>, GenericRepository<AllyAndOrganization>>(serviceProvider =>
+        new GenericRepository<AllyAndOrganization>(serviceProvider.GetRequiredService<CharSheetContext>()));
+
+builder.Services.AddScoped<IGenericRepository<AttackAndSpellcasting>, GenericRepository<AttackAndSpellcasting>>(serviceProvider =>
+    new GenericRepository<AttackAndSpellcasting>(serviceProvider.GetRequiredService<CharSheetContext>()));
+
+builder.Services.AddScoped<IGenericRepository<FeatureAndTrait>, GenericRepository<FeatureAndTrait>>(serviceProvider =>
+    new GenericRepository<FeatureAndTrait>(serviceProvider.GetRequiredService<CharSheetContext>()));
+
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -39,6 +52,12 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+
+
 var mappingConfig = new MapperConfiguration(mc =>
 {
     mc.CreateMap<DndCharacterDto, DndCharacter>();
