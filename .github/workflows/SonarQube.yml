@@ -73,6 +73,6 @@ jobs:
         run: |
           dotnet sonarscanner begin /k:"Sendej7_CharSheetForge_AYqKyYSB222sTEAu7r1E" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
           dotnet build ./webapi/webapi.csproj
-          dotnet test ./webapi/webapi.csproj --no-build --collect:"XPlat Code Coverage"
-          reportgenerator "-reports:*\TestResults\*\coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"
+          dotnet test ./webapiUnitTests/webapiUnitTests.csproj --no-build --collect:"XPlat Code Coverage"  # Dodaję ścieżkę do projektu testowego
+          reportgenerator "-reports:./webapiUnitTests/TestResults/*/coverage.cobertura.xml" "-targetdir:sonarqubecoverage" "-reporttypes:SonarQube"  # Poprawiam ścieżkę do raportów
           dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
