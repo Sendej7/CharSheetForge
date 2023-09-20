@@ -73,9 +73,6 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DndCharacterID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,8 +89,6 @@ namespace webapi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndCharacterID");
 
                     b.ToTable("AllyAndOrganization");
                 });
@@ -117,9 +112,6 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DndCharacterID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Duration")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,8 +128,6 @@ namespace webapi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DndCharacterID");
 
                     b.ToTable("AttackAndSpellcasting");
                 });
@@ -160,9 +150,6 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DndCharacterID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -180,8 +167,6 @@ namespace webapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DndCharacterID");
-
                     b.ToTable("Equipment");
                 });
 
@@ -197,9 +182,6 @@ namespace webapi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DndCharacterID")
-                        .HasColumnType("int");
-
                     b.Property<int>("LevelRequired")
                         .HasColumnType("int");
 
@@ -213,9 +195,67 @@ namespace webapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DndCharacterID");
-
                     b.ToTable("FeatureAndTrait");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.AllyAndOrganization>", b =>
+                {
+                    b.Property<int>("DndCharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AssociableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndCharacterId", "AssociableId");
+
+                    b.HasIndex("AssociableId");
+
+                    b.ToTable("AllyAndOrganizationAssociations");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.AttackAndSpellcasting>", b =>
+                {
+                    b.Property<int>("DndCharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AssociableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndCharacterId", "AssociableId");
+
+                    b.HasIndex("AssociableId");
+
+                    b.ToTable("AttacksAndSpellcastingAssociations");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.Equipment>", b =>
+                {
+                    b.Property<int>("DndCharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AssociableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndCharacterId", "AssociableId");
+
+                    b.HasIndex("AssociableId");
+
+                    b.ToTable("EquipmentAssociations");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.FeatureAndTrait>", b =>
+                {
+                    b.Property<int>("DndCharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AssociableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DndCharacterId", "AssociableId");
+
+                    b.HasIndex("AssociableId");
+
+                    b.ToTable("FeaturesAndTraitsAssociations");
                 });
 
             modelBuilder.Entity("webapi.Models.User", b =>
@@ -311,32 +351,100 @@ namespace webapi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.AllyAndOrganization>", b =>
+                {
+                    b.HasOne("webapi.Models.DND.AllyAndOrganization", "Associable")
+                        .WithMany("Associations")
+                        .HasForeignKey("AssociableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webapi.Models.DND.DndCharacter", "DndCharacter")
+                        .WithMany("AllyAndOrganizationAssociations")
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Associable");
+
+                    b.Navigation("DndCharacter");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.AttackAndSpellcasting>", b =>
+                {
+                    b.HasOne("webapi.Models.DND.AttackAndSpellcasting", "Associable")
+                        .WithMany("Associations")
+                        .HasForeignKey("AssociableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webapi.Models.DND.DndCharacter", "DndCharacter")
+                        .WithMany("AttacksAndSpellcastingAssociations")
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Associable");
+
+                    b.Navigation("DndCharacter");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.Equipment>", b =>
+                {
+                    b.HasOne("webapi.Models.DND.Equipment", "Associable")
+                        .WithMany("Associations")
+                        .HasForeignKey("AssociableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webapi.Models.DND.DndCharacter", "DndCharacter")
+                        .WithMany("EquipmentAssociations")
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Associable");
+
+                    b.Navigation("DndCharacter");
+                });
+
+            modelBuilder.Entity("webapi.Models.Generics.CharacterAssociation<webapi.Models.DND.FeatureAndTrait>", b =>
+                {
+                    b.HasOne("webapi.Models.DND.FeatureAndTrait", "Associable")
+                        .WithMany("Associations")
+                        .HasForeignKey("AssociableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("webapi.Models.DND.DndCharacter", "DndCharacter")
+                        .WithMany("FeaturesAndTraitsAssociations")
+                        .HasForeignKey("DndCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Associable");
+
+                    b.Navigation("DndCharacter");
+                });
+
             modelBuilder.Entity("webapi.Models.DND.AllyAndOrganization", b =>
                 {
-                    b.HasOne("webapi.Models.DND.DndCharacter", null)
-                        .WithMany("AlliesAndOrganizations")
-                        .HasForeignKey("DndCharacterID");
+                    b.Navigation("Associations");
                 });
 
             modelBuilder.Entity("webapi.Models.DND.AttackAndSpellcasting", b =>
                 {
-                    b.HasOne("webapi.Models.DND.DndCharacter", null)
-                        .WithMany("AttacksAndSpellcasting")
-                        .HasForeignKey("DndCharacterID");
+                    b.Navigation("Associations");
                 });
 
             modelBuilder.Entity("webapi.Models.DND.Equipment", b =>
                 {
-                    b.HasOne("webapi.Models.DND.DndCharacter", null)
-                        .WithMany("Equipment")
-                        .HasForeignKey("DndCharacterID");
+                    b.Navigation("Associations");
                 });
 
             modelBuilder.Entity("webapi.Models.DND.FeatureAndTrait", b =>
                 {
-                    b.HasOne("webapi.Models.DND.DndCharacter", null)
-                        .WithMany("FeaturesAndTraits")
-                        .HasForeignKey("DndCharacterID");
+                    b.Navigation("Associations");
                 });
 
             modelBuilder.Entity("webapi.Models.User", b =>
@@ -346,13 +454,13 @@ namespace webapi.Migrations
 
             modelBuilder.Entity("webapi.Models.DND.DndCharacter", b =>
                 {
-                    b.Navigation("AlliesAndOrganizations");
+                    b.Navigation("AllyAndOrganizationAssociations");
 
-                    b.Navigation("AttacksAndSpellcasting");
+                    b.Navigation("AttacksAndSpellcastingAssociations");
 
-                    b.Navigation("Equipment");
+                    b.Navigation("EquipmentAssociations");
 
-                    b.Navigation("FeaturesAndTraits");
+                    b.Navigation("FeaturesAndTraitsAssociations");
                 });
 #pragma warning restore 612, 618
         }

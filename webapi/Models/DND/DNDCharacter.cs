@@ -2,6 +2,7 @@
 using webapi.DTO;
 using webapi.Models.DND.Enums;
 using webapi.Models.DND.Enums.DND;
+using webapi.Models.Generics;
 
 namespace webapi.Models.DND
 {
@@ -28,26 +29,26 @@ namespace webapi.Models.DND
         public int Initiative { get; set; }
 
         // Inventory and Equipment
-        public List<Equipment> Equipment { get; set; }
+        public List<CharacterAssociation<Equipment>> EquipmentAssociations { get; set; }
         public int Gold { get; set; }
 
         // Traits and Special Abilities
-        public List<FeatureAndTrait> FeaturesAndTraits { get; set; }
+        public List<CharacterAssociation<FeatureAndTrait>> FeaturesAndTraitsAssociations { get; set; }
 
         // Attacks and Spells
-        public List<AttackAndSpellcasting> AttacksAndSpellcasting { get; set; }
+        public List<CharacterAssociation<AttackAndSpellcasting>>? AttacksAndSpellcastingAssociations { get; set; }
 
         // Other Information
         public string Backstory { get; set; } = string.Empty;
-        public List<AllyAndOrganization> AlliesAndOrganizations { get; set; }
+        public List<CharacterAssociation<AllyAndOrganization>> AllyAndOrganizationAssociations { get; set; }
         public string AdditionalNotes { get; set; } = string.Empty;
         public DndCharacter()
         {
             // List Initialization
-            Equipment = new List<Equipment>();
-            FeaturesAndTraits = new List<FeatureAndTrait>();
-            AttacksAndSpellcasting = new List<AttackAndSpellcasting>();
-            AlliesAndOrganizations = new List<AllyAndOrganization>();
+            EquipmentAssociations = new List<CharacterAssociation<Equipment>>();
+            FeaturesAndTraitsAssociations = new List<CharacterAssociation<FeatureAndTrait>>();
+            AttacksAndSpellcastingAssociations = new List<CharacterAssociation<AttackAndSpellcasting>>();
+            AllyAndOrganizationAssociations = new List<CharacterAssociation<AllyAndOrganization>>();
         }
     }
 }

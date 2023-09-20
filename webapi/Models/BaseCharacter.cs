@@ -1,4 +1,6 @@
-﻿namespace webapi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace webapi.Models
 {
     public class BaseCharacter : ICharacter
     {
@@ -7,6 +9,7 @@
         public int CardToken { get; set; }
         public string CharacterName { get; set; } = string.Empty;
         public int Level { get; set; }
+        [JsonIgnore]
         public User? User { get; set; }
         public SystemType SystemType { get; set; }
         public string? Discriminator { get; private set; }

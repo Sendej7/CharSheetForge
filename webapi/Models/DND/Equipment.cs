@@ -1,6 +1,9 @@
-﻿namespace webapi.Models.DND
+﻿using System.Text.Json.Serialization;
+using webapi.Models.Generics;
+
+namespace webapi.Models.DND
 {
-    public class Equipment
+    public class Equipment : ICharacterAssociable<Equipment>
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -10,5 +13,7 @@
         public int? Damage { get; set; } // Only for weapons
         public int? ArmorClass { get; set; } // Only for armor
         public string SpecialProperties { get; set; } = string.Empty;// Any special abilities or conditions
+        [JsonIgnore]
+        public List<CharacterAssociation<Equipment>> Associations { get; set; } = new List<CharacterAssociation<Equipment>>();
     }
 }

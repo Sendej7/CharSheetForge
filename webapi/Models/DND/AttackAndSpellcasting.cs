@@ -1,6 +1,8 @@
-﻿namespace webapi.Models.DND
+﻿using webapi.Models.Generics;
+
+namespace webapi.Models.DND
 {
-    public class AttackAndSpellcasting
+    public class AttackAndSpellcasting : ICharacterAssociable<AttackAndSpellcasting>
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -10,5 +12,6 @@
         public string DamageType { get; set; } = string.Empty;// Fire, Cold, etc.
         public string Components { get; set; } = string.Empty;// V, S, M for spells
         public string Duration { get; set; } = string.Empty;// Only for spells
+        public List<CharacterAssociation<AttackAndSpellcasting>> Associations { get; set; }
     }
 }
